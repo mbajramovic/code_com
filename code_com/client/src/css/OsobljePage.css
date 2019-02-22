@@ -1,0 +1,169 @@
+.OsobljePage {
+    text-align: center;
+}
+
+.infomenu, .infocontainer {
+    background: transparent;
+    height: 90vh;
+    float: left;
+}
+
+.infomenu {
+    width : 20%;
+    border-right: 2px solid #009973;
+    margin-top: 9px;
+    margin-bottom: 3px;
+    text-align: left;
+}
+
+.infocontainer {
+    width : 70%;
+    margin-left: 5px;
+}
+
+.containermenu li button, .zadatak_button {
+    background: transparent;
+    text-align: left;
+    border: none;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    color: gray;
+    height: 30px;
+}
+
+.containermenu li button:hover {
+    color: black;
+}
+
+
+:local(.input) {
+    margin-left: 10px;
+    height: 40px;
+    border-radius: 12px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    width: 400px;
+    clear: both;
+    margin-top: 8px;
+    border-color: #009973;
+    text-align: center;
+    background-color: transparent;
+    color: black;
+}
+
+h4 {
+    margin-left: 60px;
+}
+
+h5 {
+    margin-left: 20px;
+}
+
+h4, h5 {
+    text-align: left;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.naslov {
+    text-align: left;
+}
+
+.zadaci, .pregledZadatka {
+    margin: 10px;
+    width: 100%;
+    clear: both;
+}
+
+.zadaci {
+    height: 15%;
+    text-align: left;
+}
+
+.pregledZadatka {
+    height: 75%;
+}
+
+img {
+    width: 50px;
+    height: 50px;
+}
+
+.velikaSlika {
+    width: 90%;
+    height: 30%;
+}
+
+.zadaci ul li {
+    display: inline;
+}
+
+.zadatak_button {
+    clear: left;
+}
+
+.zadatak_button:hover {
+    color: black;
+}
+
+
+.nZadatak tbody tr td input[type=text], .osoblje_textarea {
+    width: 400px;
+} 
+
+.osoblje_textarea {
+    margin-top: 10px;
+    height: 200px;
+} 
+
+.maliText {
+    width: 400px;
+    height: 50px;
+}
+
+.aktivnaTakmicenja {
+    margin-top: 7px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: left;
+    border-bottom: 1px solid #009973;
+}
+
+.aktivnaTakmicenja button {
+    float: right;
+    background-color: #009973;
+    border-radius: 12px;
+    border: 1px transparent solid;
+    height: 30px;
+    width: 130px;
+}
+
+.aktivnaTakmicenja table {
+    width: 100%;
+}
+
+.aktivnaTakmicenja table tbody tr td {
+    width: 80%;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    margin : 5px;
+    text-align: left;
+}
+
+.takmGrupa {
+    width: 70%;
+}
+
+.ucesnik_button {
+    height: 45px;
+    background: transparent;
+    border: 0px;
+    width: 400px;
+    border-bottom: 1px solid #009973;
+    border-top: 1px solid #009973;
+    text-align: left;
+}
+
+.autotestovi {
+    background:gray;
+    
+}

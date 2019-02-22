@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Autotest Generator</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://localhost:3000/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="http://localhost:3000/common.css">
+    <script src="http://localhost:3000/helpers.js"></script>
+    <script src="http://localhost:3000/atgenerator.service.js"></script>
+    <script src="http://localhost:3000/autotest.js"></script>
+</head>
+
+<body >
+    <div id="content">
+        <div id="atConfig">
+            <form>
+                <div class="row">
+                    <label for="name" class="col-sm-2 col-form-label-sm">Task name</label>
+                    <div class="col-sm-5">
+                        <input type="text" id="name" class="form-control form-control-sm" placeholder="Task name"/>
+                    </div>
+                    <label for="id" class="col-form-label-sm">ID</label>
+                    <div class="col-sm-1">
+                        <input type="text" id="id" class="form-control form-control-sm" placeholder="ID" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="language" class="col-sm-2 col-form-label-sm">Programming language</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="language" class="form-control form-control-sm" placeholder="Programming Language"/>                    
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="required_compiler" class="col-sm-2 col-form-label-sm">Required compiler</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="required_compiler" class="form-control form-control-sm" placeholder="Required compiler"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="preferred_compiler" class="col-sm-2 col-form-label-sm">Preferred compiler</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="preferred_compiler" class="form-control form-control-sm" placeholder="Preferred compiler" />
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="compiler_features" class="col-sm-2 col-form-label-sm">Compiler features (string array)</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="compiler_features" class="form-control form-control-sm" placeholder="Compiler Features (string array)" />
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="compiler_options" class="col-sm-2 col-form-label-sm">Compiler options</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="compiler_options" class="form-control form-control-sm" placeholder="Compiler options" />
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="compiler_options_debug" class="col-sm-2 col-form-label-sm">Compiler debug options</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="compiler_options_debug" class="form-control form-control-sm" placeholder="Compiler debug options" />
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 col-form-label-sm">Other options</label>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="compile">
+                                <label class="form-check-label" for="compile">Compile</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="run">
+                                <label class="form-check-label" for="run">Run</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="test">
+                                <label class="form-check-label" for="test">Test</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="debug">
+                                <label class="form-check-label" for="debug">Debug</label>
+                            </div>                
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="profile">
+                                <label class="form-check-label" for="profile">Profile</label>
+                            </div>
+                    </div>
+                </div>                
+            </form>
+        </div>
+        <div id="atDetails" class="row">
+            <div class="col-md-2" id="atList">
+                <!--List header-->
+                <div class="row justify-content-between" style="font-size: 16px; border-bottom: 1px solid #ccc; margin-bottom: 10px;">
+                    <label style="vertical-align:text-bottom">Autotest</label>
+                    <i class="material-icons float-right" onclick="AutotestGenerator.addTest(null, 'X (Unedited)')">add_circle_outline</i>
+                </div>
+                <div class="row" id="at_warning">
+                    <label>There are no tests defined<br/>for this task.</label>
+                </div>
+                <!--Autotest list content-->
+            </div>
+            <div class="col-md-10 col-md-offset-2" id="atPreview">
+                <form>
+                    <div class="row">
+                        <label for="at_id" class="col-sm-2 col-form-label-sm">ID</label>
+                        <div class="col-sm-1">
+                            <input type="text" id="at_id" class="form-control form-control-sm" placeholder="Autotest ID" disabled />
+                        </div>
+                        <label for="at_name" class="col-sm-1 col-form-label-sm">Name</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="at_name" class="form-control form-control-sm" placeholder="Autotest name" disabled />
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                    <div class="row">
+                        <label for="require_symbols" class="col-sm-2 col-form-label-sm">Require symbols (string array)</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="require_symbols" class="form-control form-control-sm" placeholder="Require symbols (string array)" />
+                        </div>
+                    </div>                        
+                    <div class="row">
+                        <label for="replace_symbols" class="col-sm-2 col-form-label-sm">Replace symbols (string array)</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="replace_symbols" class="form-control form-control-sm" placeholder="Replace symbols (string array)" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="code" class="col-sm-2 col-form-label-sm">Code</label>
+                        <div class="col-sm-10">
+                            <textarea id="code" class="form-control form-control-sm" rows="4" placeholder="Code"></textarea>
+                        </div>
+                    </div>  
+                    <div class="row">
+                        <label for="global_above_main" class="col-sm-2 col-form-label-sm">Global scope (above main)</label>
+                        <div class="col-sm-10">
+                            <textarea id="global_above_main" class="form-control form-control-sm" rows="4" placeholder="Global scope (above main)"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="global_top" class="col-sm-2 col-form-label-sm">Global header</label>
+                        <div class="col-sm-10">
+                            <textarea id="global_top" class="form-control form-control-sm" rows="4" placeholder="Global header"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-12">Running Parameters</label>
+                        <label for="timeout" class="col-sm-2 col-form-label-sm">Timeout</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="timeout" class="form-control form-control-sm" placeholder="Timeout" />
+                        </div>
+                        <label for="vmem" class="col-sm-2 col-sm-offset-2 col-form-label-sm">Virtual Memory</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="vmem" class="form-control form-control-sm" placeholder="Virtual Memory" />
+                        </div>                        
+                        <div class="col-sm-4"></div>
+                        <label for="stdin" class="col-sm-2 col-form-label-sm">Input</label>
+                        <div class="col-sm-10">
+                            <textarea id="stdin" class="form-control form-control-sm" rows="4" placeholder="Input"></textarea>
+                        </div>
+                    </div> 
+                    <div id="expected_output_variants" class="row">
+                        <div class="col-sm-2">
+                            <label>Expected Output</label>
+                            <i class="material-icons float-right" onclick="AutotestGenerator.addOutputVariant()">add_circle_outline</i>
+                        </div>
+                        <div class="col-sm-10"> </div>
+                        <div id="label_div_v_1" class="col-sm-2"> 
+                            <label for="variant_1" class="col-form-label-sm">Variant 1</label>
+                        </div>
+                        <div id="text_div_v_1" class="col-sm-10">
+                            <textarea id="variant_1" class="form-control form-control-sm" rows="4" placeholder="Expected Output (Variant 1)"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <label class="col-sm-2 col-form-label-sm">Additional options</label>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="expected_exception">
+                                        <label class="form-check-label" for="expected_exception">Expected exception</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="expected_crash">
+                                        <label class="form-check-label" for="expected_crash">Expected crash</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="ignore_whitespace">
+                                        <label class="form-check-label" for="ignore_whitespace">Ignore whitespace</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="regex">
+                                        <label class="form-check-label" for="regex">Regex</label>
+                                    </div>                
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="substring">
+                                        <label class="form-check-label" for="substring">Substring</label>
+                                    </div>
+                            </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12">            
+                <button onclick="AutotestGenerator.exportConfigValues();" type="button" class="btn btn-success btn-sm mr-2 waves-effect float-right">Save & Export</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    AutotestGenerator.setGeneratorSetup();
+</script>
+</html>

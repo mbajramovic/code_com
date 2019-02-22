@@ -1,0 +1,173 @@
+.AdminPage {
+    text-align: center;
+}
+
+
+.NovoTakmicenje {
+    text-align: center;
+}
+
+
+table {
+    text-align: center;
+}
+
+td p {
+     margin: 12px;
+     margin-left: 35px;
+    /* width: 140px; */
+ }
+
+td input[type=date] {
+    margin-left: 2px;
+    height: 30px;
+    width: 200px;
+}
+
+:local(.datum) {
+    margin-left: 2px;
+    height: 30px;
+    width: 200px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #009973;
+}
+
+
+input[type=checkbox] {
+    margin: 0px;
+    height: 18px;
+    width: 18px;
+}
+
+input[type=number] {
+    width: 70px;
+    background : transparent;
+    border : 0;
+    border-bottom: 1px solid #009973;
+}
+
+#number {
+    width: 140px;
+}
+
+.maliButton {
+    height: 40px;
+    border-radius: 12px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+	background-color:#009973;
+    width: 110px;
+    margin-top: 10px;
+	margin-left: 20px;
+}
+
+
+
+.takmicenje, .takmicarskeGrupe {
+    text-align: center;
+    margin: 12px;
+}
+
+.takmicenje:hover, .takmicarskeGrupe:hover {
+    border-radius: 12px;
+    border: 1px solid #009973;
+    padding-bottom: 3px;
+}
+
+
+.listaOsoblja, .listaGrupa { 
+    overflow-y: scroll;
+}
+
+
+.listaOsoblja {
+    border:2px solid #009973; 
+    border-radius: 5px;
+    width:270px; 
+    height: 150px; 
+}
+
+.listaGrupa {
+
+}
+
+.loop {
+    border: 1px solid #009973;
+    border-radius: 12px;
+    margin: 10px;
+}
+
+.napomena {
+    font-size: 12px;
+    color: #009973;
+    width:80%;
+    text-align: left;
+    font-style: bold;
+}
+
+select {
+    border: 1px solid #009973;
+    background: transparent;
+    border-radius: 12px;
+    height: 30px;
+    width: 200px;
+}
+
+.takmicenje_textarea {
+    width: 300px;
+    height: 100px;
+    border: 1px solid #009973;
+}
+
+.menuZaTakmicenje, .menuZaOsoblje {
+    display: none;
+}
+
+.NoviAdmin {
+    text-align: center;
+}
+
+.buttons {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.buttons button {
+    background-color:#009973;
+    width: 150px;
+    height: 30px;
+    border-radius: 12px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    margin-right: 15px;
+}
+
+.logo {
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+}
+
+.svaTakmicenja {
+    background-color: #009973;
+    opacity: 0.9;
+    text-align: left;
+    font-family: 'Times New Roma', Times, serif;
+}
+
+.sidenav_admin {
+    height: 0%;
+    width: 70%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    background-color: white;
+    overflow-y: hidden;
+    transition: 0.5s;
+}
+
+.sidenav_admin .closebtn {
+    font-size: 36px;
+    color:black;
+}

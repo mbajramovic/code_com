@@ -1,0 +1,73 @@
+.NovoTakmicenje {
+    text-align: center;
+}
+
+.naslov {
+    margin-left: 12px;
+    text-align: center;
+    width: 50%;
+    border-bottom: 1px solid #009973;
+}
+
+table {
+    text-align: center;
+}
+ td p {
+     margin: 12px;
+     margin-left: 35px;
+     width: 140px;
+ }
+
+input {
+    margin-left: 2px;
+    height: 30px;
+    width: 200px;
+}
+
+input[type=checkbox] {
+    margin: 0px;
+    height: 18px;
+    width: 18px;
+}
+
+.takmicenje {
+    text-align: center;
+    margin: 12px;
+    width: 100%;
+}
+
+.takmicenje:hover {
+    border-radius: 12px;
+    border: 1px solid #009973;
+    padding-bottom: 3px;
+}
+
+.listaOsoblja { 
+    border:2px solid #009973; 
+    width:270px; 
+    height: 150px; 
+    overflow-y: scroll;
+}
+
+.napomena {
+    font-size: 12px;
+    color: #009973;
+    width:80%;
+    text-align: left;
+}
+
+select {
+    border: 1px solid #009973;
+    border-radius: 12px;
+    height: 30px;
+    width: 200px;
+}
+
+.takmicenja_textarea {
+    width: 300px;
+    height: 100px;
+}
+
+.menuZaTakmicenje, .menuZaOsoblje {
+    display: none;
+}

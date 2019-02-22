@@ -1,0 +1,22 @@
+#content {
+    padding: 20px; 
+}
+
+#atDetails {
+    margin-left: 0px !important;
+}
+
+#atConfig {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+#at_warning {
+    display: block;
+    text-align: center;
+}
+
+textarea {
+    margin-bottom: 8px;
+    resize:none;
+}

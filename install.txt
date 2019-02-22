@@ -1,0 +1,65 @@
+Uputstvo za instalaciju aplikacije
+==================================
+
+Datum: 28.8.2018.
+
+Za instalaciju aplikacije potrebno je:
+- Node
+- MySQL v5.7.8 ili noviji
+- PHP
+
+1. Klonirati projekat na sljedeci nacin:
+
+#git clone https://github.com/mbajramovic/code.com.git
+
+
+2. Kreirati bazu u MySQL-u:
+# mysql -u root -p
+Enter password:
+...
+mysql > CREATE DATABASE code_com DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
+
+
+3. Kreirati korisnika kojima ima prava pristupa toj bazi:
+
+mysql > GRANT ALL PRIVILEGES ON code_com.* to code_com@localhost identified by '';
+mysql> FLUSH PRIVILEGES;
+mysql> exit
+
+
+4. Instalacija potrebnih paketa 
+   4.1. Windows operativni sistem
+	Pozicionirati se u folder code.com/code_com i pokrenuti sljedece komande:
+	npm install -g yarn
+ 	npm install -g concurrently
+	npm install -g nodemon
+	npm install && cd client && npm install
+   
+   4.2. Linux operativni sistem
+	Pozicionirati se u folder code.com/code_com i pokrenuti sljedece komande:
+	npm install && cd client && npm install
+
+
+5. Pokrenuti aplikaciju
+   5.1. Windows operativni sistem
+	U folderu code.com/code_com pokrenuti komandu:
+	yarn dev
+   5.2. Linux operativni sistem
+	U folderu code.com/code_com pokrenuti komandu:
+		npm start
+	U folder code.com/code_com/client pokrenuti komandu:
+		npm start
+	U folder code.com/code_com/buildservice pokrenuti komandu:
+		php -S 0.0.0.0:8000
+
+6. Podesiti vrijednosti
+   6.1. U folder code.com/code_com/buildconfig unijeti IP adresu racunara na kojem je pokrenut PHP
+	server (racunar na kojem je pokrenuta aplikacija) i broj porta (u ovom slucaju 8000).
+   6.2. Na racunarima u lokalnoj mreži koji vrše testiranje podesiti buildservice te u datoteci
+	config.php kao URL sa kojeg servis povlaci rješenja unijeti:
+		https://IP_ADRESA_RACUNARA_NA_KOJEM_JE_APLIKACIJA_POKRENUTA:PORT_ZA_PHP
+	Napomena: vrijednost porta je 8000 (u ovom slucaju).
+	Komandom pull.php se povlace rješenja na buildservice-u.
+
+Kao rezultat, trebala bi biti pokrenuta aplikaciji na lokaciji localhost:3000, sa serverom koji
+osluškuje na portu 5000, te web servis za slanje rješenja na portu 8000 i IP adresi racunara.

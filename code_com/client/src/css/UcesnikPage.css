@@ -1,0 +1,101 @@
+.UcesnikPage {
+    display: grid;
+    width: 100%;
+    height: 100%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-rows: 7% 93%;
+    grid-gap: 10px;
+    width: 100%;
+}
+
+.prviRed {
+    grid-row-start: 1;
+    grid-row-end: 1;
+}
+
+.drugiRed {
+    grid-row: 2;
+    grid-template-columns: 20% 70%;
+    grid-gap: 10px;
+    width: 100%;
+}
+
+.prvaKolona {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    height: 70vh;
+}
+
+.drugaKolona {
+    grid-column-start: 2;
+    grid-column-end : 2;
+    overflow-y: scroll;
+    height: 70vh;
+}
+
+.prviRed, .prvaKolona, .drugaKolona {
+    background: white;
+    float: left;
+    margin: 5px;
+    border-radius: 12px;
+    font-family: 'Times New Roman', Times, serif;
+    opacity: 0.95;
+}
+
+.button-verzije {
+    background-color: #009973;
+    width: 95%;
+    border-radius: 12px;
+    height: 30px;
+}
+
+.button-verzije:hover {
+    color:  #003311;
+}
+
+.div-verzije {
+    transition: all 1s;
+    margin-top: -100%;
+}
+
+.div-verzije.expanded {
+    margin-top: 0%;
+}
+
+.container-verzije {
+    overflow: hidden;
+}
+
+#verzije table tbody tr td {
+    border : 1px solid #009973;
+}
+
+#cel td, #cel th {
+    border : 1px solid #009973;
+    padding: 0.5em;
+}
+
+#verzije table tbody tr th, #verzije table tbody tr td {
+    padding: 1em;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav .closebtn {
+    font-size: 36px;
+    color:white;
+}

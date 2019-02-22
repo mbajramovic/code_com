@@ -1,0 +1,24 @@
+{
+	"name" : "myTask",
+	"language" : "C",
+	"compile" : "true",
+	"run" : "true",
+	"test" : "true",
+	"debug" : "true",
+	"required_compiler" : "",
+	"preferred_compiler" : "",
+	"compiler_options" : "",
+	"compiler_features" : "",
+	"profile" : "true",
+	"compiler_options_debug" : "-g",
+	"running_params" : 
+	{
+		"stdin" : "",
+		"timeout" : "10"
+		
+	},
+	"expected_exception" : "false",
+	"ignore_whitespace" : "false",
+	"expected_crash" : "false",
+	"test_specifications" : []
+}		 

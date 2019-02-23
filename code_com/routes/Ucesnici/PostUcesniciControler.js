@@ -30,16 +30,19 @@ module.exports = {
                                     });
                                 }
                                 else {
+                                    console.log(__data);
                                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                 }
                             });
                         }
                         else {
+                            console.log(_data);
                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                         }
                     });
                 }
                 else {
+                    console.log(data);
                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                 }
             });
@@ -67,12 +70,15 @@ module.exports = {
                                     let ucesnik = {'ime' : '', 'prezime' : '', 'maticniBroj' : ''};
                                     Ucesnici.dodajNovogUcesnika(ucesnik, d.id, data.id, htmlencode, function(_success, _data) {
                                         if(!_success) {
+                                            console.log(_data);
                                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                         }
                                         else { 
                                             UcesniciTakmicarskeGrupe.novaVeza(_data.id, takmicarskeGrupeId, function(__success, __data) {
-                                                if (!__success)
+                                                if (!__success) {
+                                                    console.log(__data);
                                                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                }
                                                 else
                                                     j++;
                                                 if (i == ucesnici.length - 1)
@@ -83,8 +89,10 @@ module.exports = {
                                         }
                                     });
                                 }
-                                else 
+                                else  {
+                                    console.log(data);
                                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                }
                             });
                         }
                     });

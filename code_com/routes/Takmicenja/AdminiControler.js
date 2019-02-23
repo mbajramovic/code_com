@@ -20,6 +20,7 @@ module.exports = {
                             for (var i = 0; i < korisnik.odabranaTakmicenja.length; i++) {
                                 AdminiTakmicenja.novaVeza(data.id, korisnik.odabranaTakmicenja[i].id, function(__success, __data) {
                                     if (__success == null) {
+                                        console.log(__data);
                                         res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                     }
                                 });
@@ -33,12 +34,16 @@ module.exports = {
                                 }));
                             }
                         }
-                        else
+                        else {
+                            console.log(_data);
                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                        }
                     });
                 }
-                else
+                else {
+                    console.log(data);
                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                }
             });
         }   
         else 
@@ -58,6 +63,7 @@ module.exports = {
                 }));
             })
             .catch(function(error) {
+                console.log(error);
                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
             });
         }

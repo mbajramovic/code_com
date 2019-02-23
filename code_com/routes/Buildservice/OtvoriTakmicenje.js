@@ -3,6 +3,8 @@ const sequelize = require('../../client/src/base/baza.js');
 var request = require('request');
 
 const buildConfig = require('../../configfiles/buildservice.json').buildservice;
+const buildervice_url = require('../../configfiles/buildservice_url.json').buildservice;
+
 const Odgovori = require('../ServerOdgovori.js');
 const Sesija = require('../PomocneRute/Sesija.js');
 const {Zadaci, Autotestovi, Takmicenja, TakmicarskeGrupe, Task, ZadatakTask} = sequelize.import('../../client/src/base/models/Models');
@@ -99,7 +101,7 @@ module.exports = {
                                     task.profile = task.profile ? "true" : "false";
                                     task.debug = task.debug ? "true" : "false";
                                     request.get(
-                                        'http://' + buildConfig.hostname + ':' + buildConfig.port + '/push.php?action=setTask&task=' + JSON.stringify(task),
+                                        buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task),
                                         function(error, response, body) {
                                             if (!error && response.statusCode == 200) {
                                                 let taskId = JSON.parse(body).data.id;
@@ -166,7 +168,8 @@ module.exports = {
                                                     });
                                                 });
                                             }
-                                            else { console.log(error);
+                                            else { 
+                                                console.log(error);
                                                 res.end(JSON.stringify(Odgovori.BUILDSERVICE_ERROR));}
                                         }
                                     

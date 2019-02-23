@@ -9,6 +9,7 @@ var request = require('request');
 var FormData = require('form-data');
 var fs = require('fs');
 const buildConfig = require('../../configfiles/buildservice.json').buildservice;
+const buildervice_url = require('../../configfiles/buildservice_url.json').buildservice;
 const Odgovori = require('../ServerOdgovori.js');
 const {Zadaci, Autotestovi} = sequelize.import('../../client/src/base/models/Models');
 
@@ -19,7 +20,8 @@ router.post('/', upload.single('file'), function(req, res, next) {
         task : req.body.id,
         program : fs.createReadStream(req.file.path)
     };
-    request.post('http://' + buildConfig.hostname + ':' + buildConfig.port + '/push.php?action=addProgram', {formData : formdata}, function(err, ress, body) {
+    // 'http://' + buildConfig.hostname + ':' + buildConfig.port
+    request.post(buildervice_url.url + '/push.php?action=addProgram', {formData : formdata}, function(err, ress, body) {
         if (!error && ress.statusCode == 200) {
             var odgovor = JSON.parse(body);
             if (odgovor.success == 'true') {

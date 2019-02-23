@@ -27,8 +27,10 @@ router.post('/', upload.single('file'), function(req, res) {
                         'id' : data.id
                     }));
                 }
-                else
+                else {
+                    console.log(data);
                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                }
             });
         }
         else

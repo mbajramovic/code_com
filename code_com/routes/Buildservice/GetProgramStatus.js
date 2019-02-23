@@ -3,6 +3,8 @@ const sequelize = require('../../client/src/base/baza.js');
 var request = require('request');
 
 const buildConfig = require('../../configfiles/buildservice.json').buildservice;
+const buildervice_url = require('../../configfiles/buildservice_url.json').buildservice;
+
 const Odgovori = require('../ServerOdgovori.js');
 var rezultatiTestiranja = require('./RezultatiTestiranja.js');
 
@@ -16,7 +18,7 @@ module.exports = {
         var idZadatka = req.query.zadatakId;
         var jezik = req.query.language;
         
-        request.get('http://' + buildConfig.hostname + ':' + buildConfig.port + '/push.php?action=getProgramStatus&program=' + programId, function(error, response, body) {
+        request.get(buildervice_url.url + '/push.php?action=getProgramStatus&program=' + programId, function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 var odgovor = JSON.parse(body);
                 if (odgovor.success == 'true') {
@@ -140,7 +142,7 @@ module.exports = {
                                                                             })
                                                                             .catch(error => {
                                                                                 console.log(error);
-                                                                                res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                                                res.end(JSON.stringify( Odgovori.SERVER_ERROR));
                                                                             });
                                                                         })
                                                                         .catch(error => {
@@ -157,7 +159,7 @@ module.exports = {
                                                         }
                                                         else {
                                                             console.log(error);
-                                                            res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                            res.end(JSON.stringify( Odgovori.SERVER_ERROR));
                                                         }
                                                     });
                                                 }
@@ -170,7 +172,7 @@ module.exports = {
                                     })
                                     .catch(error => {
                                         console.log(error);
-                                        res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                        res.end(JSON.stringify( Odgovori.SERVER_ERROR));
                                     });
                                 })
                                 .catch(error => {
@@ -243,24 +245,32 @@ module.exports = {
                                                                     }));
                                                                 })
                                                                 .catch(error => {
+                                                                    console.log(error);
                                                                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                                                 });
                                                             })
                                                             .catch(error => {
+                                                                console.log(error);
                                                                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                                             });
                                                         }
                                                     }
-                                                    else   
+                                                    else   {
+                                                        console.log(_data);
                                                         res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                    }
                                                 });
                                             }
-                                            else
+                                            else {
+                                                console.log(data);
                                                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                            
+                                            }
                                         });
                                     }
                                 })
                                 .catch(error => {
+                                    console.log(error);
                                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                 });
                             }

@@ -63,23 +63,28 @@ module.exports = {
                                         }
                                     })
                                     .catch(error => {
+                                        console.log(error);
                                         res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                     });
                                 })
                                 .catch(error => {
+                                    console.log(error);
                                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                 });
                                 }
                             })
                         .catch(error => {
+                            console.log(error);
                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                         });
                     })
                     .catch(error => {
+                        console.log(error);
                         res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                     });
                 })
             .catch(error => {
+                console.log(error);
                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
             });
         }  
@@ -131,10 +136,12 @@ module.exports = {
                     }
                 })  
                 .catch(error => {
+                    console.log(error);
                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                 });
             })
             .catch(error => {
+                console.log(error);
                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
             });
         }

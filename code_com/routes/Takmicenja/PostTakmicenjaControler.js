@@ -16,7 +16,7 @@ module.exports = {
                 kraj : takmicenje.datumZavrsetka,
                 opis : takmicenje.opis,
                 aktivno : false,
-                trajanje : 0,
+                trajanje : null,
                 programskiJezik : takmicenje.programskiJezik,
                 tipDatoteke : takmicenje.tipDatoteke
             })
@@ -29,6 +29,7 @@ module.exports = {
                         takmicenjaId : dodanoTakmicenje.id
                     })
                     .catch(function(error) {
+                        console.log(error);
                         res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                     });
                 }
@@ -39,6 +40,7 @@ module.exports = {
                         adminiZaTakmicenjaId : takmicenje.clanoviKomisije[j].id
                     })
                     .catch(function(error) {
+                        console.log(error);
                         res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                     });
                 }
@@ -50,6 +52,7 @@ module.exports = {
                 }
             })
             .catch(function(error) {
+                console.log(error);
                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
             });
         }
@@ -95,6 +98,7 @@ module.exports = {
                                 }));
                         })
                         .catch(error => {
+                            console.log(error);
                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                         });
                     }
@@ -118,6 +122,7 @@ module.exports = {
                                 }));
                         })
                         .catch(error => {
+                            console.log(error);
                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                         });
                     }

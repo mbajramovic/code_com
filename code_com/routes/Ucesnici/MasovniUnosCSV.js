@@ -31,12 +31,15 @@ router.post('/', upload.single('file'), function(req, res) {
                             i++;
                             Ucesnici.dodajNovogUcesnika(ucesnik, d.id, data.id, htmlencode, function(_success, _data) {
                                 if(!_success) {
+                                    console.log(_data);
                                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                 }
                                 else { 
                                     UcesniciTakmicarskeGrupe.novaVeza(_data.id, takmicarskeGrupeId, function(__success, __data) {
-                                        if (!__success)
+                                        if (!__success) {
+                                            console.log(__data);
                                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                        }
                                         else
                                             j++;
                                         if (i == j)
@@ -47,8 +50,10 @@ router.post('/', upload.single('file'), function(req, res) {
                                 }
                             });
                         }
-                        else 
+                        else  {
+                            console.log(data);
                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                        }
                     });
                 }
             })

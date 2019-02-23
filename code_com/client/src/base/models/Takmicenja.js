@@ -33,7 +33,7 @@ const Takmicenja = db.define('takmicenja', {
         }
     },
 
-    opis : {
+    opis : { 
         type : Sequelize.STRING
     },
 

@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../../client/src/base/baza.js');
 var request = require('request');
 const buildConfig = require('../../configfiles/buildservice.json').buildservice;
+const buildervice_url = require('../../configfiles/buildservice_url.json').buildservice;
 var rezultatiTestiranja = require('./RezultatiTestiranja.js');
 const Odgovori = require('../ServerOdgovori.js');
 var fs = require('fs');
@@ -32,7 +33,7 @@ router.post('/', upload.single('file'), function(req, res) {
                 task : zadatak.taskId, 
                 program : fs.createReadStream(req.file.path)
             };
-            request.post('http://' + buildConfig.hostname + ':' + buildConfig.port + '/push.php?action=addProgram', {formData : formdata}, function(err, ress, body) {
+            request.post(buildervice_url.url + '/push.php?action=addProgram', {formData : formdata}, function(err, ress, body) {
                 if (!err && ress.statusCode == 200) {
                     try {
                         var odgovor = JSON.parse(body);
@@ -57,6 +58,7 @@ router.post('/', upload.single('file'), function(req, res) {
                                 })
                             })
                             .catch(error => {
+                                console.log(error);
                                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                             })
                         }
@@ -74,6 +76,7 @@ router.post('/', upload.single('file'), function(req, res) {
         
         })
         .catch(error => {
+            console.log(error);
             res.end(JSON.stringify(Odgovori.BUILDSERVICE_ERROR));
         });
     }

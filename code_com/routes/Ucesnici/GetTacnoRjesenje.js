@@ -25,6 +25,7 @@ router.get('/', function(req, res) {
         }));
     })
     .catch(error => {
+        console.log(error);
         res.end(JSON.stringify(Odgovori.SERVER_ERROR));
     });
 })

@@ -44,6 +44,10 @@ module.exports = {
                                 }
                             })
                             .then(tasks => {
+                            if (tasks.length == 0) {
+                                res.end(JSON.stringify(Odgovori.NO_TESTS));
+                                return;
+                            }
                             for (let ii = 0; ii < tasks.length; ii++) {
                                
                             Autotestovi.findAll({
@@ -182,6 +186,7 @@ module.exports = {
                                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                             });
                         }
+                    
                         })
                         .catch(error => {
                             console.log(error);

@@ -80,7 +80,6 @@ module.exports = {
                     Takmicenja.findAll({ 
                     
                         where : {
-                            trajanje : 0,
                             aktivno : 0,
                             zavrseno : 0,
                             kraj : {

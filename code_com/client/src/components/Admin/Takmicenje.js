@@ -34,11 +34,13 @@ class Takmicenje extends Component {
             greskaUnosa : null,
 
             takmicenje : null,
-            grupeZaUrediti : null
+            grupeZaUrediti : null,
+
+            takmicarskiAdmini : []
         }
 
         if (this.props.match != null) 
-            this.povuciTakmicenje(this.props.match.params.takmicenjeId)
+            this.povuciTakmicenje(this.props.match.params.takmicenjeId);
         
         this.prikaziGrupe = this.prikaziGrupe.bind(this);
         this.povuciAdmine = this.povuciAdmine.bind(this);
@@ -114,17 +116,23 @@ class Takmicenje extends Component {
     }
 
     clanKomisijeUpdate(event) {
-        if (event.target.checked)
+        if (event.target.checked)  {
             this.state.listaAdmina.map((admin) => {
-                if (admin.id == event.target.value)
-                    this.state.clanoviKomisije.push(admin);
+                if (admin.id == event.target.value) {
+                    this.state.clanoviKomisije.push(admin.id);
+                    this.povuciAdmine();
+                }
             });
-        else { 
-            var clanovi = this.state.clanoviKomisije.filter(clanKomisije => clanKomisije.id != event.target.value);
-            this.setState({
-                clanoviKomisije : clanovi
-            });
+        
         }
+        else { 
+            if (this.state.takmicenje != null)
+                this.state.clanoviKomisije = this.state.clanoviKomisije.filter(clanKomisije => (clanKomisije != event.target.value));
+            else
+            this.state.clanoviKomisije = this.state.clanoviKomisije.filter(clanKomisije => (clanKomisije.id != event.target.value));
+           this.povuciAdmine();
+        }
+
         
     }
 
@@ -153,6 +161,16 @@ class Takmicenje extends Component {
     }
 
     povuciAdmine() {
+        if(this.state.listaAdmina.length > 0) {
+            const _admini = this.state.listaAdmina.map((admin) => (
+                <div><input type="checkbox" value={admin.id} id={admin.id} onChange={this.clanKomisijeUpdate.bind(this)} checked={this.state.clanoviKomisije.includes(admin.id) ? true : false}/>{admin.ime + ' ' + admin.prezime}<br/></div>
+            ));
+
+           this.setState({
+               admini : _admini
+           });
+        }
+        else 
         axios.get('/admini', {
             params : {
                 korisnickoIme : Sesija.korisnik.korisnickoIme,
@@ -162,7 +180,7 @@ class Takmicenje extends Component {
         .then(response => {
             if (response.data.success == 'yes') {
                 const _admini = response.data.data.map((admin) => (
-                    <div><input type="checkbox" value={admin.id} onChange={this.clanKomisijeUpdate.bind(this)}/>{admin.ime + ' ' + admin.prezime}<br/></div>
+                    <div><input type="checkbox" value={admin.id} id={admin.id} onChange={this.clanKomisijeUpdate.bind(this)} checked={this.state.clanoviKomisije.includes(admin.id) ? true : false}/>{admin.ime + ' ' + admin.prezime}<br/></div>
                 ));
 
                this.setState({
@@ -190,9 +208,11 @@ class Takmicenje extends Component {
                 this.setState({
                     takmicenje : response.data.takmicenje,
                     grupeZaUrediti : response.data.takmicarskeGrupe,
-                    brojGrupa : response.data.takmicarskeGrupe.length
+                    brojGrupa : response.data.takmicarskeGrupe.length,
+                    clanoviKomisije : response.data.admini
                 });
                 this.prikaziGrupe(0);
+                this.povuciAdmine();
             }
 
             
@@ -236,6 +256,7 @@ class Takmicenje extends Component {
                 axios.post('/updateTakmicenja', {
                     takmicenje : this.state.takmicenje,
                     grupe : this.state.grupeZaUrediti,
+                    admini : this.state.clanoviKomisije,
                     korisnickoIme : Sesija.korisnik.korisnickoIme,
                     token : Sesija.korisnik.token
                 })
@@ -395,7 +416,7 @@ class Takmicenje extends Component {
                                     </tbody>
                                 </table>
                             </div>
-                            {this.state.takmicenje == null ?
+                            {(this.state.takmicenje == null || this.state.takmicenje != null) ?
                             <div className="takmicenje">
                                 <p className="naslov">Informacije o osoblju</p>
                                 <table>

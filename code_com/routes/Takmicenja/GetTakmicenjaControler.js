@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const Odgovori = require('../ServerOdgovori.js');
 const Sesija = require('../PomocneRute/Sesija.js');
-const { Takmicenja, TakmicarskeGrupe, AdminiTakmicenja, Pitanja } = sequelize.import('../../client/src/base/models/Models.js');
+const { Takmicenja, TakmicarskeGrupe, AdminiTakmicenja, AdminiZaTakmicenja, Pitanja } = sequelize.import('../../client/src/base/models/Models.js');
 
 module.exports = {
     getTakmicenja : function(req, res) {
@@ -128,12 +128,27 @@ module.exports = {
                         }
                     })
                     .then(pitanja => { 
-                        res.end(JSON.stringify({
-                            'success' : 'yes',
-                            'takmicenje' : takmicenje,
-                            'takmicarskeGrupe' : takmicarskeGrupe ,
-                            'brojPitanja' : pitanja.length
-                        }));
+                        AdminiTakmicenja.findAll({
+                            attributes : ['adminiZaTakmicenjaId'],
+                            where : {
+                                takmicenjaId : req.query.id
+                            }
+                        })
+                        .then(adminiIDs => {
+                            let admini = [];
+                            for (let i = 0; i < adminiIDs.length; i++) {
+                                admini.push(adminiIDs[i].adminiZaTakmicenjaId);
+                                    if (i == adminiIDs.length - 1)
+                                        res.end(JSON.stringify({
+                                            'success' : 'yes',
+                                            'takmicenje' : takmicenje,
+                                            'takmicarskeGrupe' : takmicarskeGrupe ,
+                                            'brojPitanja' : pitanja.length,
+                                            'admini' : admini
+                                        }));
+                            
+                            }
+                        })
                     });
                 });
             })

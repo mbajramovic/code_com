@@ -33,6 +33,8 @@ class Osoblje extends Component {
     componentWillMount() {
         this.povuciAktivnaTakmicenja();
     }
+  
+
 
     imeUpdate(event) {
         this.setState({ ime : event.target.value });
@@ -82,7 +84,8 @@ class Osoblje extends Component {
 
                 this.setState({
                     takmicenja : _takmicenja,
-                    listaTakmicenja : response.data.data
+                    listaTakmicenja : response.data.data,
+                    poruka : null
                 });
             }
             else {
@@ -173,9 +176,10 @@ class Osoblje extends Component {
     render() {
         var p_style = {width : '50px'},
             i_style = {width : '280px', border : '0', borderBottom : '1px solid #66ff66', background : 'transparent'};
+        
         return (
             <div className="NoviAdmin">
-            {this.state.poruka != null ? <p className={this.state.uspjeh_greska}>{this.state.poruka}</p> : 
+            
                 <div>
                 <div className="takmicenje">
                     <p className="naslov">Lični podaci</p>
@@ -215,11 +219,12 @@ class Osoblje extends Component {
                 <div className="buttons">
                     <button onClick={this.dodajAdmina.bind(this)}>Potvrdi</button>
                 </div>
+                {this.state.poruka != null ? <p className={this.state.uspjeh_greska} >{this.state.poruka}</p> : null}
                 <div className="logo">
                     <h2>code.com</h2>
                 </div> 
             </div>
-            }
+            
              <div className="sidenav_admin" id="mySidenav">
                         <table style={{margin: '3%'}}>
                             <tbody>

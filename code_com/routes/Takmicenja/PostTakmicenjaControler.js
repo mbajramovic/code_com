@@ -61,10 +61,11 @@ module.exports = {
             res.end(JSON.stringify(Odgovori.UNAUTHORIZED));
         }
     },
-
+ 
     updateTakmicenje : function(req, res) {
         var takmicenje = req.body.takmicenje;
         var grupe = req.body.grupe;
+        var admini = req.body.admini;
         var korisnik = {korisnickoIme : req.body.korisnickoIme, token : req.body.token};
         if(req.session.rola == 'administrator' && Sesija.isOK(korisnik)) {
             Takmicenja.update(
@@ -83,50 +84,101 @@ module.exports = {
                 }
             )
             .then(updated => {
-                for (let i = 0; i < grupe.length; i++) {
-                    if (grupe[i].id == null) {
-                        TakmicarskeGrupe.create({
-                            naziv : grupe[i].naziv,
-                            brojTakmicara : grupe[i].brojTakmicara,
-                            brojZadataka : grupe[i].brojZadataka,
-                            takmicenjaId : takmicenje.id
-                        })
-                        .then(grupa => {
-                            if (i == grupe.length - 1)
-                                res.end(JSON.stringify({
-                                    'success' : 'yes'
-                                }));
-                        })
-                        .catch(error => {
-                            console.log(error);
-                            res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                        });
-                    }
-                    else {
-                        TakmicarskeGrupe.update(
-                            {
-                                naziv : grupe[i].naziv,
-                                brojTakmicara : grupe[i].brojTakmicara,
-                                brojZadataka : grupe[i].brojZadataka
-                            },
-                            {
+                for (let j = 0; j < admini.length; j++) {
+                    AdminiTakmicenja.findOne({
+                        where : {
+                            takmicenjaId : takmicenje.id,
+                            adminiZaTakmicenjaId : admini[j]
+                        }
+                    })
+                    .then(adminTakmicenje => {
+                        if (adminTakmicenje == null) {
+                            AdminiTakmicenja.create({
+                                takmicenjaId : takmicenje.id,
+                                adminiZaTakmicenjaId : admini[j]
+                            })
+                            .then(created => {
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                            })
+                        }
+                        if (j == admini.length - 1) {
+                            AdminiTakmicenja.findAll({
                                 where : {
-                                    id : grupe[i].id
-                                }
-                            }
-                        )
-                        .then(updatedGroup => {
-                            if (i == grupe.length - 1)
-                                res.end(JSON.stringify({
-                                    'success' : 'yes'
-                                }));
-                        })
-                        .catch(error => {
-                            console.log(error);
-                            res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                        });
-                    }
+                                    takmicenjaId : takmicenje.id
+                                },
+                                attributes : ['adminiZaTakmicenjaId']
+                            })
+                            .then(adminiZaTakmicenja => {
+                                //if (adminiZaTakmicenja.length > admini.length) 
+                                    let adminiZaTakmicenje = [];
+                                    for (var ii = 0; ii < adminiZaTakmicenja.length; ii++)
+                                        adminiZaTakmicenje.push(adminiZaTakmicenja[ii].adminiZaTakmicenjaId);
+                                    for (let ii = 0; ii < adminiZaTakmicenje.length; ii++) {
+                                        if (!admini.includes(adminiZaTakmicenje[ii])) {
+                                            AdminiTakmicenja.destroy({
+                                                where : {
+                                                    takmicenjaId : takmicenje.id,
+                                                    adminiZaTakmicenjaId : adminiZaTakmicenje[ii]
+                                                }
+                                            });
+                                        }
+                                        if (ii == adminiZaTakmicenje.length - 1) {
+                                            for (let i = 0; i < grupe.length; i++) {
+                                                if (grupe[i].id == null) {
+                                                    TakmicarskeGrupe.create({
+                                                        naziv : grupe[i].naziv,
+                                                        brojTakmicara : grupe[i].brojTakmicara,
+                                                        brojZadataka : grupe[i].brojZadataka,
+                                                        takmicenjaId : takmicenje.id
+                                                    })
+                                                    .then(grupa => {
+                                                        if (i == grupe.length - 1)
+                                                            res.end(JSON.stringify({
+                                                                'success' : 'yes'
+                                                            }));
+                                                    })
+                                                    .catch(error => {
+                                                        console.log(error);
+                                                        res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                    });
+                                                }
+                                                else {
+                                                    TakmicarskeGrupe.update(
+                                                        {
+                                                            naziv : grupe[i].naziv,
+                                                            brojTakmicara : grupe[i].brojTakmicara,
+                                                            brojZadataka : grupe[i].brojZadataka
+                                                        },
+                                                        {
+                                                            where : {
+                                                                id : grupe[i].id
+                                                            }
+                                                        }
+                                                    )
+                                                    .then(updatedGroup => {
+                                                        if (i == grupe.length - 1)
+                                                            res.end(JSON.stringify({
+                                                                'success' : 'yes'
+                                                            }));
+                                                    })
+                                                    .catch(error => {
+                                                        console.log(error);
+                                                        res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                
+                            })
+                        }
+                    })
                 }
+               
             });
         }
         else

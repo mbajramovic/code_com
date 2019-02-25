@@ -52,7 +52,7 @@ class AdminPage extends Component {
         var prikaz_podopcija_local = [];
 
         prikaz_opcija_local.push(<Takmicenje />);
-        prikaz_opcija_local.push(<Osoblje/>);
+        prikaz_opcija_local.push(<Osoblje />);
         prikaz_opcija_local.push(<PregledTakmicenja />);
         
 

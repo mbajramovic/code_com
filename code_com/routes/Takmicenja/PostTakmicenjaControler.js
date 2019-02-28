@@ -21,7 +21,7 @@ module.exports = {
                 tipDatoteke : takmicenje.tipDatoteke
             })
             .then(function(dodanoTakmicenje) {
-                for (var i = 0; i < takmicenje.takmicarskeGrupe.length; i++) {
+                for (let i = 0; i < takmicenje.takmicarskeGrupe.length; i++) {
                     TakmicarskeGrupe.create({
                         naziv : (takmicenje.takmicarskeGrupe[i].naziv),
                         brojTakmicara : takmicenje.takmicarskeGrupe[i].brojTakmicara,
@@ -32,24 +32,28 @@ module.exports = {
                         console.log(error);
                         res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                     });
+
+                    if (i == takmicenje.takmicarskeGrupe.length - 1) {
+                        for (let j = 0; j < takmicenje.clanoviKomisije.length; j++) {
+                            AdminiTakmicenja.create({
+                                takmicenjaId : dodanoTakmicenje.id,
+                                adminiZaTakmicenjaId : takmicenje.clanoviKomisije[j]
+                            })
+                            .catch(function(error) {
+                                console.log(error);
+                                res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                            });
+        
+                            if ( j == takmicenje.clanoviKomisije.length - 1) {
+                                res.end(JSON.stringify({
+                                    'success' : 'yes'
+                                }));
+                            }
+                        }
+        
+                    }
                 }
-    
-                for (var j = 0; j < takmicenje.clanoviKomisije.length; j++) {
-                    AdminiTakmicenja.create({
-                        takmicenjaId : dodanoTakmicenje.id,
-                        adminiZaTakmicenjaId : takmicenje.clanoviKomisije[j].id
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                        res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                    });
-                }
-    
-                if (i == takmicenje.takmicarskeGrupe.length && j == takmicenje.clanoviKomisije.length) {
-                    res.end(JSON.stringify({
-                        'success' : 'yes'
-                    }));
-                }
+
             })
             .catch(function(error) {
                 console.log(error);

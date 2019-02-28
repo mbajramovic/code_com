@@ -285,7 +285,7 @@ const atGeneratorService = (() => {
         }
 
         //var jezik = window.localStorage.getItem('jezik').length == 3 && window.localStorage.getItem('jezik')[2] == "+" && window.localStorage.getItem('jezik')[0] == "C" ? 'C++' : window.localStorage.getItem('jezik');
-        xhttp.open("GET", "http://localhost:3000" + url + "?zadaciId=" + window.localStorage.getItem('id') + "&jezik=" + window.localStorage.getItem('jezik'), true);
+        xhttp.open("GET", url + "?zadaciId=" + window.localStorage.getItem('id') + "&jezik=" + window.localStorage.getItem('jezik'), true);
         xhttp.send();
     }
 
@@ -301,7 +301,7 @@ const atGeneratorService = (() => {
                 alert("An error occured. Error: " + xhttp.responseText);
             }
         }
-        xhttp.open("POST", "http://localhost:3000" + url, true);
+        xhttp.open("POST", url, true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         var json = {
             'file' :file,

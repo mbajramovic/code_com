@@ -79,13 +79,13 @@ module.exports = {
                 else {
                     Takmicenja.findAll({ 
                     
-                        where : {
+                        /*where : {
                             aktivno : 0,
                             zavrseno : 0,
                             kraj : {
                                 [Op.gte] : new Date() // ... where kraj <= today
                             }
-                        }
+                        }*/
                     })
                     .then(takmicenja => {
                         res.end(JSON.stringify({

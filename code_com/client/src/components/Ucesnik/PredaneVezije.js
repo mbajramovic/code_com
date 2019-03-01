@@ -16,6 +16,7 @@ var tumac = require('../Tumac.js');
 var ekstenzije = require('../Ekstenzije.js');
 
 const axios = require('axios');
+const server = require('../../serverinfo.json').server;
 
 class PredaneVerzije extends Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class PredaneVerzije extends Component {
 
         //this.povuciVerzije();
         
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.obavijestiAdministratora = data => {
             this.socket.emit('OBAVIJESTI_ADMINISTRATORE', {
                 verzija : data
@@ -76,7 +77,7 @@ class PredaneVerzije extends Component {
     }
 
     jezikUpdate(e) {
-        this.odabraniJezik = e.target.value;
+        this.odabraniJezik = e.target.value;  
     }
 
     uploadFile() {

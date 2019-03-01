@@ -104,15 +104,15 @@ class NoviUcesnik extends Component {
     }
 
     generisiKorisnickePodatke() {
+        var korisnickoIme = (this.props.brojUcesnika + 1) > 9 ? 'ucesnik' + (this.props.brojUcesnika + 1) : 'ucesnik0' + (this.props.brojUcesnika + 1);
         this.setState({
-            korisnickoIme : 'ucesnik' + this.props.brojUcesnika + 1,
+            korisnickoIme : korisnickoIme,
             lozinka : Math.random().toString(36).slice(2) + this.props.brojUcesnika + 1
         });
     }
 
     dodajUcesnika() {
         if (this.state.ucesnik == null) {
-            this.generisiKorisnickePodatke();
             axios.post('/noviUcesnik', {
                 ucesnik : this.state,
                 takmicarskaGrupaId : this.props.takmGrupaId,
@@ -192,7 +192,12 @@ class NoviUcesnik extends Component {
     }
 
     render() {
+       
         const style={border : '0', borderBottom : '1px solid #009973'};
+        if (this.state.ucesnik == null && this.state.korisnickoIme.length == 0)
+            this.generisiKorisnickePodatke();
+        
+
         return(
             <div>
                 {this.state.poruka != null ?

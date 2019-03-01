@@ -15,7 +15,6 @@ import {
     Link
 } from 'react-router-dom';
 
-import io from 'socket.io-client';
 
 
 const axios = require('axios');

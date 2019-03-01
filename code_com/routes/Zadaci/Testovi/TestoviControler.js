@@ -1,9 +1,8 @@
-var fs = require('fs');
-var http = require('http');
-const Sequelize = require('sequelize');
 const sequelize = require('../../../client/src/base/baza.js');
 //const {Ucesnici, Korisnici, AdminiZaTakmicenja} = sequelize.import('../client/src/base/models/Models.js');
+const Buildservice = require('./Buildservice.js');
 const { Task, Autotestovi } = sequelize.import('../../../client/src/base/models/Models.js');
+
 
 module.exports = {
     openGenerator : function(req, res) {
@@ -15,7 +14,6 @@ module.exports = {
         var zadaciId = req.body.zadaciId;
         task.compiler_features = task.compiler_features.toString();
         task.zadaciId = zadaciId;
-        var autotestovi = task.test_specifications;
         Task.findOne({
             where : {
                 zadaciId : zadaciId,
@@ -24,45 +22,58 @@ module.exports = {
         })
         .then(_task => {
             if (_task) {
+                let autotestovi = task.test_specifications;
                 Task.updateTask(task, function(success, data) {
-                    for (let i = 0; i < autotestovi.length; i++) {
-                        let autotest = autotestovi[i];
-                        console.log(autotest.id);
-                        autotest.running_params.vmem = autotest.running_params.vmem == null ? '' : autotest.running_params.vmem;
-                        autotest.running_params.timeout = autotest.running_params.timeout == null ? '' : autotest.running_params.timeout;
-                        /*autotest.require_symbols = autotest.require_symbols.toString();
-                        autotest.replace_symbols = autotest.replace_symbols.toString();*/
-                        autotest.zadaciId = zadaciId;
-                        autotest.language = task.language;
-                        /*var expected = {};
-                        for (let j = 0; j < autotest.expected.length; j++)
-                          expected[j.toString()] = autotest.expected[j];
-                        autotest.expected = expected;*/
-                        Autotestovi.findOne({
-                            where : {
-                                _id : autotest.id,
-                                zadaciId :  zadaciId,
-                                language : task.language
-                            }
-                        })
-                        .then(_autotest => {
-                            if (_autotest) {
-                                Autotestovi.updateAutotest(autotest, function(success, data) {
-                                    console.log(data);
-                                }); 
-                            }
-                            else {
-                                Autotestovi.dodajAutotest(autotest, function(success,data) {
-
+                    Autotestovi.destroy({
+                        where : {
+                            zadaciId : zadaciId,
+                            language : task.language
+                        }
+                    })
+                    .then(destroyed => {
+                        for (let i = 0; i < autotestovi.length; i++) {
+                            let autotest = autotestovi[i];
+                            console.log(autotest.id);
+                            autotest.running_params.vmem = autotest.running_params.vmem == null ? '' : autotest.running_params.vmem;
+                            autotest.running_params.timeout = autotest.running_params.timeout == null ? '' : autotest.running_params.timeout;
+                            /*autotest.require_symbols = autotest.require_symbols.toString();
+                            autotest.replace_symbols = autotest.replace_symbols.toString();*/
+                            autotest.zadaciId = zadaciId;
+                            autotest.language = task.language;
+                            /*var expected = {};
+                            for (let j = 0; j < autotest.expected.length; j++)
+                              expected[j.toString()] = autotest.expected[j];
+                            autotest.expected = expected;*/
+                           
+                                /*if (_autotest) {
+                                    Autotestovi.updateAutotest(autotest, function(success, data) {
+                                        console.log(data);
+                                    }); 
+                                }
+                                else {
+                                    Autotestovi.dodajAutotest(autotest, function(success,data) {
+    
+                                    });
+                                }*/
+                                Autotestovi.dodajAutotest(autotest, function(success, data) {
+                                    if (i == autotestovi.length - 1)
+                                        Buildservice.addTask(_task.id)
+                                        .then(odgovor => {
+                                            console.log(odgovor);
+                                        })
+                                        .catch(error => {
+                                            console.log(error);
+                                        })
                                 });
-                            }
-                        });
-
-                       
-                    }
+                            
+    
+                           
+                        }
+                    })
                 });
             }
             else {
+                let autotestovi = task.test_specifications;
                 for (let j = 0; j < 4; j++) {
                     let jezik;
                     switch(j) {
@@ -75,8 +86,8 @@ module.exports = {
                             jezik = 'C++';
                             break;
                         case 2:
-                            task.language = 'QBasic';
-                            jezik = 'QBasic';
+                            task.language = 'QBasic'; 
+                            jezik = 'QBasic'; 
                             break;
                         case 3:
                             task.language = 'Pascal';
@@ -87,16 +98,21 @@ module.exports = {
                     Task.dodajTask(task, function(success, data) {
                         for (let i = 0; i < autotestovi.length; i++) {
                             let autotest = autotestovi[i];
-                            /*autotest.require_symbols = autotest.require_symbols.toString();
-                            autotest.replace_symbols = autotest.replace_symbols.toString();*/
+                            console.log(autotest);
+
                             autotest.zadaciId = zadaciId;
                             autotest.language = jezik;
-                            /*var expected = {};
-                            for (let j = 0; j < autotest.expected.length; j++)
-                            expected[j.toString()] = autotest.expected[j];
-                            autotest.expected = expected;*/
-                            Autotestovi.dodajAutotest(autotest, function(success, data) {
-                                console.log(data);
+                       
+                            Autotestovi.dodajAutotest(autotest, function(success, _data) {
+                                if (i == autotestovi.length - 1) {
+                                    Buildservice.addTask(data.id)
+                                    .then(odgovor => {
+                                        console.log(odgovor);
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                    });
+                                }
                             }); 
                         }
                         

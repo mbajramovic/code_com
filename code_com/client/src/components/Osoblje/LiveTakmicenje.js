@@ -13,7 +13,7 @@ import Sesija from '../Sesija.js';
 import DetaljiRjesenja from '../Ucesnik/DetaljiRjesenja.js';
 
 const axios = require('axios');
-var tumac = require('../Tumac.js');
+const server = require('../../serverinfo.json').server;
 
 
 class LiveTakmicenje extends Component {
@@ -26,7 +26,7 @@ class LiveTakmicenje extends Component {
             odabraniZadatak : null
         }
 
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.socket.on('NOVA_VERZIJA', (data) => {
            this.novaVerzija(data);
         });

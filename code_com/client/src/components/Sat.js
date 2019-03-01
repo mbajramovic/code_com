@@ -3,7 +3,7 @@ import { setInterval } from 'timers';
 
 import io from 'socket.io-client';
 
-const axios = require('axios');
+const server = require('../serverinfo.json').server;
 
 class Sat extends Component {
     constructor(props) {
@@ -15,10 +15,11 @@ class Sat extends Component {
             takmicenjeId : this.props.takmicenjeId
         };
         this.timer = 0;
+        this.done = false;
         this.ucesnik = this.props.ucesnik;
         this.odbrojavaj = this.odbrojavaj.bind(this);
         this.pretvoriSekunde = this.pretvoriSekunde.bind(this);
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.emit = data => {
             this.socket.emit('TIMER', {
                 id : data
@@ -52,9 +53,10 @@ class Sat extends Component {
             sekunde : sekunde
         });
         
-        if (sekunde < 1) {
+        if (sekunde < 1 && !this.done) {
             clearInterval(this.odbrojavaj);
             this.emit(this.state.takmicenjeId);
+            this.done = true;
         }
     }
     

@@ -26,8 +26,8 @@ class Takmicenje extends Component {
             grupe : [],
             admini : null,
             listaAdmina : [],
-            programskiJezik : '',
-            tipDatoteke : '',
+            programskiJezik : 'Jezik',
+            tipDatoteke : '.tip',
 
             poruka : null,
             greska : null,
@@ -220,7 +220,7 @@ class Takmicenje extends Component {
                 alert(response.data.data)
         })
         .catch(err => {
-            alert(err)
+            console.log(err)
         })
     }
 
@@ -435,31 +435,7 @@ class Takmicenje extends Component {
                             </div>
                             : null
                             }
-                            <div className="takmicenje">
-                                <p className="naslov">Informacije o programskom jeziku</p>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td><p>Programski jezik: </p></td>
-                                            {takmicenje == null ?
-                                            <td><input type="text" style={inputStyle} onChange={this.programskiJezikUpdate.bind(this)}/></td>
-                                            :
-                                            <td><input type="text" style={inputStyle} value={this.state.takmicenje.programskiJezik} onChange={(e) => this.onChange(e.target.value, 'programskiJezik')}/></td>
-                                            }
-                                            <td><p>Tip datoteke: </p></td>
-                                            {takmicenje == null ?
-                                            <td><input type="text" style={inputStyle} onChange={this.tipDatotekeUpdate.bind(this)}></input></td>
-                                            :
-                                            <td><input type="text" style={inputStyle} value={this.state.takmicenje.tipDatoteke} onChange={(e) => this.onChange(e.target.value, 'tipDatoteke')}></input></td>
-                                            }
-                                        </tr>
-                                        <tr>
-                                            <td colSpan="2"></td>
-                                            <td colSpan="2"><p className="napomena">Tip datoteke predstavlja ekstenziju datoteke koja se može predavati kao rješenje zadatka. Npr., za programski jezik C potrebno je unijeti .c kao tip datoteke.</p></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                           
                             <div className="takmicenje">
                                 <p className="naslov">Ostale informacije o takmičenju</p>
                                 <table>

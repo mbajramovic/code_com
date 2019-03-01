@@ -51,9 +51,9 @@ module.exports = {
                         var at = rez.rezultati[j];
                         var expected = [];
                     if (at.autotestovi != null) {
-                        for (let j = 0; ;j++) {
-                            if (at.autotestovi.expected[j.toString()] != null)
-                                    expected.push(at.autotestovi.expected[j.toString()]);
+                        for (let ii = 0; ;ii++) {
+                            if (at.autotestovi.expected[ii.toString()] != null)
+                                    expected.push(at.autotestovi.expected[ii.toString()]);
                                 else
                                     break;
                         }

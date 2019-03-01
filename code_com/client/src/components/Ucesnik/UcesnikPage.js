@@ -19,6 +19,7 @@ import Pitanja from './Pitanja.js';
 import Sat from '../Sat.js';
 
 const axios = require('axios');
+const server = require('../../serverinfo.json').server;
 
 class UcesnikPage extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class UcesnikPage extends Component {
         this.povuciInformacije = this.povuciInformacije.bind(this);
         this.povuciZadatke = this.povuciZadatke.bind(this);
 
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.socket.on('KRAJ_TAKMICENJA', (data) => {
             this.setState({
                 kraj : true

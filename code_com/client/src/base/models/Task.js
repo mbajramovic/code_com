@@ -91,7 +91,8 @@ Task.updateTask = function(task, fn) {
         },
         {
             where : {
-                zadaciId : task.zadaciId
+                zadaciId : task.zadaciId,
+                language : task.language
             }
         }
     )

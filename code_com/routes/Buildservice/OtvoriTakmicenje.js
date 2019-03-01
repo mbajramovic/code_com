@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+
 const sequelize = require('../../client/src/base/baza.js');
 var request = require('request');
 
@@ -134,9 +134,17 @@ module.exports = {
                                                                     var dateTime = new Date();
                                                                     dateTime.setHours(dateTime.getHours() + parseInt(vrijeme.sati));
                                                                     dateTime.setMinutes(dateTime.getMinutes() + parseInt(vrijeme.minute));
-                                                                    takmicenje.updateAttributes({
+                                                                    
+                                                                    Takmicenja.update(
+                                                                    {
+                                                                        trajanje : dateTime,
                                                                         aktivno : true,
-                                                                        trajanje : dateTime
+                                                                        zavrseno : false
+                                                                    },
+                                                                    {
+                                                                            where : {
+                                                                                id : takmicenjeId
+                                                                            }
                                                                     })
                                                                     .then(done => {
                                                                         //update();

@@ -13,6 +13,7 @@ import Sesija from '../Sesija.js';
 import Ekstenzije from '../Ekstenzije.js';
 
 const axios = require('axios');
+const server = require('../../serverinfo.json').server;
 
 class RangLista extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class RangLista extends Component {
         this.evaluirajPonovo = this.evaluirajPonovo.bind(this);
         this.ucitajRezultate = this.ucitajRezultate.bind(this);
 
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.socket.on('RANG_LISTA', (data) => {
            this.povuciListu(data.verzija.takmicarskaGrupaId)
         });

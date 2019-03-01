@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import Sesija from '../Sesija.js';
 
 const axios = require('axios');
+const server = require('../../serverinfo.json').server;
 
 class Pitanja extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class Pitanja extends Component {
         this.povuciPitanja = this.povuciPitanja.bind(this);
         this.posaljiOdgovor = this.posaljiOdgovor.bind(this);
 
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.socket.on('NOVO_PITANJE', (data) => {
             var pitanje = data.pitanje;
             var neodgovorenaPitanja = this.state.neodgovorenaPitanja;

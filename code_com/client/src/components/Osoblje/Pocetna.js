@@ -1,8 +1,7 @@
 // pocetna stranica za osoblje (administratore takmičenja)
 
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import registerServiceWorker from '../../registerServiceWorker';
+
 
 import '../../css/OsobljePage.css';
 import '../../css/common.css'
@@ -21,6 +20,7 @@ import io from 'socket.io-client';
 
 
 const axios = require('axios');
+const server = require('../../serverinfo.json').server;
 
 class Pocetna extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class Pocetna extends Component {
         
         localStorage.setItem('adminId', this.state.id);
 
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.socket.on('NOVA_VERZIJA', (data) => {
            this.novaVerzija(data);
         });

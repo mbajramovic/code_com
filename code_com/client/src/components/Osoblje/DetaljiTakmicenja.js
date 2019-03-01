@@ -1,15 +1,11 @@
 // stranica o detaljima takmičenja za osoblje (administratora takmičenja)
 
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import registerServiceWorker from '../../registerServiceWorker';
 import io from 'socket.io-client';
 
 import '../../css/common.css';
 import '../../css/OsobljePage.css';
 import '../../css/UcesnikPage.css';
-import logo from '../../images/zadatak_logo.png';
-import nz_logo from '../../images/novizadatak_logo.png';
 
 import Ucesnici from './Ucesnici/Ucesnici.js';
 import Autotestovi from './Autotestovi.js';
@@ -21,9 +17,7 @@ import Sat from '../Sat.js';
 
 
 import OsnovneInformacije from './Takmicenje/OsnovneInformacije.js';
-import Pravila from './Takmicenje/Pravila.js';
-import NoviZadatak from './Takmicenje/NoviZadatak.js';
-import PregledZadatka from './Takmicenje/PregledZadatka.js';
+import Pravila from './Takmicenje/Pravila.js'; 
 import Zadaci from './Takmicenje/Zadaci.js';
 
 import Sesija from '../Sesija.js';
@@ -36,6 +30,7 @@ import {
 } from 'react-router-dom';
 
 const axios = require('axios');
+const server = require('../../serverinfo.json').server;
 
 
 
@@ -63,7 +58,7 @@ class PregledTakmicenja extends Component {
 
         this.povuciTakmicenje = this.povuciTakmicenje.bind(this);
 
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.socket.on('NOVO_PITANJE_PREGLED', (data) => {
             this.setState({
                 brojNovihPitanja : data
@@ -95,7 +90,7 @@ class PregledTakmicenja extends Component {
             target : event.target
         });
 
-        if (event.target.id == '0') {
+        if (event.target.id == '0' || event.target.id == '1') {
             var ind = this.state.otvoriTakmicenje;
             this.setState({otvoriTakmicenje : !ind});
         }
@@ -219,6 +214,11 @@ class PregledTakmicenja extends Component {
                                         <button  onClick={this.oznaci.bind(this)}>Predane verzije</button>
                                     </Link>
                                 </li>
+                            <li>
+                                <Link to=''> 
+                                    <button id='1' onClick={this.oznaci.bind(this)}>Reaktiviraj takmičenje</button>
+                                </Link>
+                            </li>
                             <li>
                                 <Link  to={`/admin_takmicenja/detalji/${ this.props.id }/autotestovi`}>
                                     <button  onClick={this.oznaci.bind(this)}>Ažuriraj autotestove</button>

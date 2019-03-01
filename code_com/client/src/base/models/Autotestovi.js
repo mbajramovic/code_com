@@ -81,9 +81,10 @@ Autotestovi.dodajAutotest = function(autotest, fn) {
     if (autotest.running_params.timeout.length == 0)
         autotest.running_params.timeout = null;
     
-    autotest.expected = arrayToJson(autotest.expected);
-    autotest.require_symbols = arrayToJson(autotest.require_symbols);
-    autotest.replace_symbols = arrayToJson(autotest.replace_symbols);
+        console.log(autotest.expected.toString()[0]);
+    autotest.expected = autotest.expected.toString()[0] === '[' ? autotest.expected : arrayToJson(autotest.expected);
+    autotest.require_symbols = typeof autotest.require_symbols !== 'array' ?  autotest.require_symbols : arrayToJson(autotest.require_symbols);
+    autotest.replace_symbols = typeof autotest.replace_symbols !== 'array' ? autotest.replace_symbols : arrayToJson(autotest.replace_symbols);
     
     Autotestovi.create({
         _id : autotest.id,

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import registerServiceWorker from '../../registerServiceWorker';
 
-import OsobljePageStyle from  '../../css/OsobljePage.css';
 import '../../css/common.css'
 
 //import Takmicenja from './Takmicenja.js';
@@ -13,12 +10,7 @@ import PrivateRoute from '../PrivateRoute';
 
 /* ----- zbog osvježavanja stranice */
 import DetaljiTakmicenja from './DetaljiTakmicenja.js';
-import NoviZadatak from './Takmicenje/NoviZadatak.js';
-import OsnovneInformacije from './Takmicenje/OsnovneInformacije.js';
-import Pravila from './Takmicenje/Pravila.js';
-import PregledZadatka from './Takmicenje/PregledZadatka.js';
-import Zadaci from './Takmicenje/Zadaci.js';
-import Sesija from '../Sesija.js';
+
 
 import { 
     BrowserRouter as Router, 
@@ -29,7 +21,6 @@ import {
 } from 'react-router-dom';
 
 
-const axios = require('axios');
 
 class OsobljePage extends Component {
     constructor(props) {

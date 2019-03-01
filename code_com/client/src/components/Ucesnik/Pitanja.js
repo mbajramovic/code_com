@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import Sesija from '../Sesija.js';
 
 const axios = require('axios');
+const server = require('../../serverinfo.json').server;
 
 class Pitanja extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class Pitanja extends Component {
             greska : ''
         }
 
-        this.socket = io('localhost:5000');
+        this.socket = io(server.ip + ':' + server.port);
         this.socket.on('NOVI_ODGOVOR' + this.state.ucesnikId, (data) => {
             console.log(data.odgovor);
             var odgovorenaPitanja = this.state.odgovorenaPitanja;

@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import NewWindow from 'react-new-window';
 
-import back from '../../images/background_7.jpg';
-import checkIcon from '../../images/check_icon.png';
-import xIcon from '../../images/x_icon.png';
 import Sesija from '../Sesija.js';
 
 var axios = require('axios');

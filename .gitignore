@@ -58,9 +58,9 @@ typings/
 .env
 
 # my files
-/Ucesnici.pdf
-/UcesniciSaPodacima.pdf
-/Zadaci.pdf
+./Ucesnici.pdf
+./UcesniciSaPodacima.pdf
+./Zadaci.pdf
 /buildservice_url.json
 /serverinfo.json
 /buildservice.json

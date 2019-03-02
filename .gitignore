@@ -57,10 +57,3 @@ typings/
 # dotenv environment variables file
 .env
 
-# my files
-./Ucesnici.pdf
-./UcesniciSaPodacima.pdf
-./Zadaci.pdf
-/buildservice_url.json
-/serverinfo.json
-/buildservice.json

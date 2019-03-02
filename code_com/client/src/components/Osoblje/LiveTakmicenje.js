@@ -146,7 +146,6 @@ class LiveTakmicenje extends Component {
                 <option value={i}>Zadatak {i + 1}.</option>
             ))
         }
-
         var verzije = [];
         if (this.state.odabraniZadatak != null) {
             verzije = this.state.zadaci[this.state.odabraniZadatak].rezultati.map((verzija, i) => (

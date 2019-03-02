@@ -87,6 +87,7 @@ class PredaneVerzije extends Component {
         fd.append('ucesnikId', this.state.ucesnikId);
         fd.append('korisnickoIme', Sesija.korisnik.korisnickoIme);
         fd.append('token', Sesija.korisnik.token);
+        fd.append('jezik', this.odabraniJezik);
         axios.post('/rjesenje', fd)
         .then(response => {
             var zip = new JSZip();  
@@ -156,22 +157,24 @@ class PredaneVerzije extends Component {
                         };
                     }
                     if (i == verzije.length - 1) {
-                        var netestiraneVerzije = response.data.netestiraneVerzije;
-                        var programIDs = [];
-                        for (let j = 0; j < netestiraneVerzije.length; j++) {
-                            programIDs.push({'programId' : netestiraneVerzije[j].programId, 'indeksVerzije' : verzije.length});
-                            var verzija = {
-                                'id' : netestiraneVerzije[j].id,
-                                'vrijeme' : netestiraneVerzije[j].createdAt,
-                                'rjesenje' : netestiraneVerzije[j].rjesenje,
-                                'status' : 'Molimo da sačekate...'
-                            }
-                            verzije.push(verzija);
-                        }
-                        this.setState({ verzije : verzije, programIDs : programIDs});
+                      
                         break;
                     }
                 }
+                var netestiraneVerzije = response.data.netestiraneVerzije;
+                console.log(netestiraneVerzije);
+                var programIDs = [];
+                for (let j = 0; j < netestiraneVerzije.length; j++) {
+                    programIDs.push({'programId' : netestiraneVerzije[j].programId, 'indeksVerzije' : verzije.length});
+                    var verzija = {
+                        'id' : netestiraneVerzije[j].id,
+                        'vrijeme' : netestiraneVerzije[j].createdAt,
+                        'rjesenje' : netestiraneVerzije[j].rjesenje,
+                        'status' : 'Molimo da sačekate...'
+                    }
+                    verzije.push(verzija);
+                }
+                this.setState({ verzije : verzije, programIDs : programIDs});
             }
         })
         .catch(error => {
@@ -195,7 +198,7 @@ class PredaneVerzije extends Component {
                     var verzija = this.state.verzije[this.state.programIDs[0].indeksVerzije];
                     if (response.data.success == 'yes') {
                         var zadatakId = -1;
-                        verzija.autotest_rezultati = [];
+                        verzija.autotest_rezultati = []; 
                         var rezultati = response.data.autotestovi;
                         var glavniRezultat = response.data.rezultat;
                         verzija.status = tumac.glavniTumac(glavniRezultat.status);

@@ -67,7 +67,8 @@ module.exports = {
                                     }
                                 else {
                                     //if (i == autotestovi.length - 1) { //??
-                                    var testovi = [];
+                                    var testovi = []; 
+                                    let task = tasks[ii];
                                     for (let j = 0; j < autotestovi.length; j++) {
                                         let expected = [];
                                         for (var k = 0;;k++) {
@@ -94,7 +95,7 @@ module.exports = {
                                             testSpecification.use_pipes = "true";
                                         testovi.push(testSpecification);
                                     }
-                                    var task = tasks[ii];
+                                   
                                     task.dataValues.compiler_features = [];
                                     task = task.dataValues;
                                     task.running_params = {'timeout' : 10, 'vmem' : 1000};

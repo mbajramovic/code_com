@@ -59,126 +59,136 @@ module.exports = {
                                 var autotestovi = rezultatTestiranja.test_results;
                                 var verzijaId = req.query.verzijaId;
                                 var uspjesniTestovi = 0;
-
-                                Autotestovi.findAll({
+                                Verzije.findOne({
                                     where : {
-                                        zadaciId : idZadatka,
-                                        language : jezik
-                                    }
+                                        id : req.query.verzijaId
+                                    },
+                                    attributes : ['jezik']
                                 })
-                                .then(testovi => {
-                                    for (let i = 1; i <= testovi.length; i++) {
-                                        if (autotestovi[i.toString()].status == 1)
-                                            uspjesniTestovi++;
-                                    }
-                                    Zadaci.findOne({
-                                        attributes : ['bodovi'],
+                                .then(v => {
+                                    Autotestovi.findAll({
                                         where : {
-                                            id : idZadatka
+                                            zadaciId : idZadatka,
+                                            language : v.jezik
                                         }
                                     })
-                                    .then(zad => {
-                                        var output = rezultatTestiranja.compile_result.output.length == 0 ? 'Program se uspješno kompajlirao.' : rezultatTestiranja.compile_result.output;
-                                        Verzije.update({
-                                            compileResult : rezultatTestiranja.compile_result.status,
-                                            compileResult_output : output,
-                                            bodovi : (uspjesniTestovi/testovi.length) * zad.bodovi,
-                                            jezik : jezik
-                                        }, {
+                                    .then(testovi => {
+                                        for (let i = 1; i <= testovi.length; i++) {
+                                            if (autotestovi[i.toString()].status == 1)
+                                                uspjesniTestovi++;
+                                        }
+                                        Zadaci.findOne({
+                                            attributes : ['bodovi'],
                                             where : {
-                                                id : req.query.verzijaId
+                                                id : idZadatka
                                             }
                                         })
-                                        .then(updated => {
-
-                                        })
-                                        .catch(error => {
-                                            console.log(error);
-                                            res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                                        });
-                                        Autotestovi.findAll({
-                                            where : {
-                                                zadaciId : idZadatka,
-                                                language : jezik
-                                            }
-                                        })
-                                        .then(_autotestovi => {
-                                            var autotestoviZaVratit = [];
-                                            if (_autotestovi) {
-                                                for (let i = 1; i <= _autotestovi.length; i++) {
-                                                    var autotest = autotestovi[i.toString()];
-                                                    autotest.verzijeId = verzijaId;
-                                                    autotest.zadatakId = idZadatka;
-                                                    autotest.id = i;
-                                                    AutotestoviRezultati.dodajRezultat(autotest, function(success, data) {
-                                                        if (success) {
-                                                            autotest.ulaz = data.ulaz;
-                                                            autotest.ocekivaniIzlaz = data.ocekivaniIzlaz;
-                                                            autotest.bodovi = data.status == 1 ? _autotestovi[i-1].bodovi : 0;
-                                                            AutotestoviRezultati.bodoviUpdate(data.id, autotest.bodovi, function(_success, _data) {
-                                                                if (_success) {
-                                                                    autotestoviZaVratit.push(autotest);
-                                                                    if (i == _autotestovi.length) {
-                                                                        Zadaci.findOne({
-                                                                            attributes : ['takmicarskeGrupeId'],
-                                                                            where : {
-                                                                                id : idZadatka
+                                        .then(zad => {
+                                            var output = rezultatTestiranja.compile_result.output.length == 0 ? 'Program se uspješno kompajlirao.' : rezultatTestiranja.compile_result.output;
+                                            Verzije.update({
+                                                compileResult : rezultatTestiranja.compile_result.status,
+                                                compileResult_output : output,
+                                                bodovi : (uspjesniTestovi/testovi.length) * zad.bodovi,
+                                                jezik : jezik
+                                            }, {
+                                                where : {
+                                                    id : req.query.verzijaId
+                                                }
+                                            })
+                                            .then(updated => {
+                                                Autotestovi.findAll({
+                                                    where : {
+                                                        zadaciId : idZadatka,
+                                                        language : v.jezik
+                                                    }
+                                                })
+                                                .then(_autotestovi => {
+                                                    var autotestoviZaVratit = [];
+                                                    if (_autotestovi) {
+                                                        for (let i = 1; i <= _autotestovi.length; i++) {
+                                                            var autotest = autotestovi[i.toString()];
+                                                            autotest.verzijeId = verzijaId;
+                                                            autotest.zadatakId = idZadatka;
+                                                            autotest.id = i;
+                                                            AutotestoviRezultati.dodajRezultat(autotest, function(success, data) {
+                                                                if (success) {
+                                                                    autotest.ulaz = data.ulaz;
+                                                                    autotest.ocekivaniIzlaz = data.ocekivaniIzlaz;
+                                                                    autotest.bodovi = data.status == 1 ? _autotestovi[i-1].bodovi : 0;
+                                                                    AutotestoviRezultati.bodoviUpdate(data.id, autotest.bodovi, function(_success, _data) {
+                                                                        if (_success) {
+                                                                            autotestoviZaVratit.push(autotest);
+                                                                            if (i == _autotestovi.length) {
+                                                                                Zadaci.findOne({
+                                                                                    attributes : ['takmicarskeGrupeId'],
+                                                                                    where : {
+                                                                                        id : idZadatka
+                                                                                    }
+                                                                                })
+                                                                                .then(zadatak => {  
+                                                                                    TakmicarskeGrupe.findOne({
+                                                                                        where : {
+                                                                                            id : zadatak.takmicarskeGrupeId
+                                                                                        }
+                                                                                    })
+                                                                                    .then(grupa => {
+                                                                                        rezultatTestiranja.takmicenjeId = grupa.takmicenjaId;
+                                                                                        rezultatTestiranja.takmicarskaGrupaId = zadatak.takmicarskeGrupeId;
+                                                                                        res.end(JSON.stringify({
+                                                                                            'success' : 'yes',
+                                                                                            'autotestovi' : autotestoviZaVratit, 
+                                                                                            'rezultat' : rezultatTestiranja
+                                                                                        }));
+                                                                                    })
+                                                                                    .catch(error => {
+                                                                                        console.log(error);
+                                                                                        res.end(JSON.stringify( Odgovori.SERVER_ERROR));
+                                                                                    });
+                                                                                })
+                                                                                .catch(error => {
+                                                                                    console.log(error);
+                                                                                    res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                                                })
                                                                             }
-                                                                        })
-                                                                        .then(zadatak => {  
-                                                                            TakmicarskeGrupe.findOne({
-                                                                                where : {
-                                                                                    id : zadatak.takmicarskeGrupeId
-                                                                                }
-                                                                            })
-                                                                            .then(grupa => {
-                                                                                rezultatTestiranja.takmicenjeId = grupa.takmicenjaId;
-                                                                                rezultatTestiranja.takmicarskaGrupaId = zadatak.takmicarskeGrupeId;
-                                                                                res.end(JSON.stringify({
-                                                                                    'success' : 'yes',
-                                                                                    'autotestovi' : autotestoviZaVratit, 
-                                                                                    'rezultat' : rezultatTestiranja
-                                                                                }));
-                                                                            })
-                                                                            .catch(error => {
-                                                                                console.log(error);
-                                                                                res.end(JSON.stringify( Odgovori.SERVER_ERROR));
-                                                                            });
-                                                                        })
-                                                                        .catch(error => {
+                                                                        }
+                                                                        else {
                                                                             console.log(error);
                                                                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                                                                        })
-                                                                    }
+                                                                        }
+                                                                    });
                                                                 }
                                                                 else {
                                                                     console.log(error);
-                                                                    res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                                    res.end(JSON.stringify( Odgovori.SERVER_ERROR));
                                                                 }
                                                             });
                                                         }
-                                                        else {
-                                                            console.log(error);
-                                                            res.end(JSON.stringify( Odgovori.SERVER_ERROR));
-                                                        }
-                                                    });
-                                                }
-                                            }
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.log(error);
+                                                    res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                });
+                                            })
+                                            .catch(error => {
+                                                console.log(error);
+                                                res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                            });
                                         })
                                         .catch(error => {
                                             console.log(error);
-                                            res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                            res.end(JSON.stringify( Odgovori.SERVER_ERROR));
                                         });
                                     })
                                     .catch(error => {
                                         console.log(error);
-                                        res.end(JSON.stringify( Odgovori.SERVER_ERROR));
+                                        res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                     });
                                 })
-                                .catch(error => {
-                                    console.log(error);
-                                    res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                                });
+                               .catch(error => {
+                                   console.log(error);
+                                   res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                               })
                             }
                         }
                         else if(rezultatTestiranja.status == 3) {

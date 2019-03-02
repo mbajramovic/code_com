@@ -32,7 +32,7 @@ Verzije.novaVerzija = function(verzija, fn) {
         zadaciId : verzija.zadaciId,
         ucesniciId : verzija.ucesniciId,
         bodovi : 0,
-        jezik : ''
+        jezik : verzija.jezik
     })
     .then(verzija => {
         if (verzija)

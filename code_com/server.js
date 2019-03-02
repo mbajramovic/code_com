@@ -77,6 +77,7 @@ io.on('connection', (socket) => {
                 zavrseno : true
             })
             .then(done => {
+                io.emit('KRAJ_TAKMICENJA' + data.id, data);
                 io.emit('KRAJ_TAKMICENJA', data);
             })
         });

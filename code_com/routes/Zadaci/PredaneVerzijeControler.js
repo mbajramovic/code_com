@@ -104,6 +104,7 @@ module.exports = {
                             _verzije[j].status = rezultatiTestiranja.glavniRezultat(_verzije[j].compileResult);
 
                             if (j == _verzije.length - 1) {
+                                console.log(_verzije);
                                 netestiraneVerzije = _verzije;
                                 res.end(JSON.stringify({
                                     'success' : 'yes',
@@ -169,6 +170,7 @@ module.exports = {
                         for (var verzija in grupisaneVerzije) {
                             konacneVerzije.push({'verzijeId' : verzija, 'rezultati' : grupisaneVerzije[verzija]})
                         }
+
                         var verzije = [];
                         for (let  i = 0; i < konacneVerzije.length; i++) {
                             var verzija = {};
@@ -248,6 +250,7 @@ module.exports = {
                         }));
                 })
                 .catch(error => {
+                    console.log(error);
                     res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                 });
             });

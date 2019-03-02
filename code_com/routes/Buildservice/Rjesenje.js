@@ -17,7 +17,7 @@ router.post('/', upload.single('file'), function(req, res) {
     var korisnik = {korisnickoIme : req.body.korisnickoIme, token : req.body.token};
     if(req.session.rola == 'ucesnik' && Sesija.isOK(korisnik)) {
         if (req.file) {
-            var verzija = {'filename' : req.file.filename, 'zadaciId' : req.body.zadatakId, 'ucesniciId' : req.body.ucesnikId, 'programId' : -1};
+            var verzija = {'filename' : req.file.filename, 'zadaciId' : req.body.zadatakId, 'ucesniciId' : req.body.ucesnikId, 'programId' : -1, 'jezik' : req.body.jezik};
             Verzije.novaVerzija(verzija, function(success, data) {
                 if (success) {
                     var rjesenje = fs.readFileSync('uploads/verzije/' + req.file.filename);

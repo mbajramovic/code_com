@@ -39,13 +39,11 @@ AutotestoviRezultati.dodajRezultat = function(rezultat, fn) {
         }
     })
     .then(autotest => {
-        AutotestoviRezultati.create({
-            compileResult : rezultat.compile_result.status,
-            runResult : rezultat.run_result.status,
-            status : rezultat.status,
-            autotestoviId : autotest.id,
-            verzijeId : rezultat.verzijeId,
-            output : rezultat.run_result.output
+        AutotestoviRezultati.findOne({
+            where : {
+                verzijeId : rezultat.verzijeId,
+                autotestoviId : autotest.id
+            }
         })
         .then(autotest_rezultat => {
             if (autotest_rezultat) {
@@ -61,14 +59,39 @@ AutotestoviRezultati.dodajRezultat = function(rezultat, fn) {
                 autotest_rezultat.bodovi = autotest.bodovi;
                 fn('yes', autotest_rezultat);
             }
-            else
-                fn(null, 'Greska..');
-        })
-        .catch(error => {
-            console.log(error.message);
-            fn(null, error.message);
-        })
-    })
+            else {
+                AutotestoviRezultati.create({
+                    compileResult : rezultat.compile_result.status,
+                    runResult : rezultat.run_result.status,
+                    status : rezultat.status,
+                    autotestoviId : autotest.id,
+                    verzijeId : rezultat.verzijeId,
+                    output : rezultat.run_result.output
+                })
+                .then(autotest_rezultat => {
+                    if (autotest_rezultat) {
+                        autotest_rezultat.ulaz = autotest.stdin;
+                        var expected = [];
+                        for (let i = 0;;i++) {
+                            if (autotest.expected[i.toString()] != null)
+                                expected.push(autotest.expected[i.toString()]);
+                            else
+                                break;
+                        }
+                        autotest_rezultat.ocekivaniIzlaz = expected;
+                        autotest_rezultat.bodovi = autotest.bodovi;
+                        fn('yes', autotest_rezultat);
+                    }
+                    else
+                        fn(null, 'Greska..');
+                })
+                .catch(error => {
+                    console.log(error.message);
+                    fn(null, error.message);
+                })
+            }
+        });
+    });
 }
 
 AutotestoviRezultati.bodoviUpdate = function(ar_id, bodovi, fn) {

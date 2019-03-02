@@ -52,7 +52,7 @@ class PregledTakmicenja extends Component {
             },
             error : null,
             poruka : null,
-
+            kraj : false,
             brojNovihPitanja : -1
         }
 
@@ -70,7 +70,11 @@ class PregledTakmicenja extends Component {
                 brojNovihPitanja : br - 1
             });
         });
-
+        this.socket.on('KRAJ_TAKMICENJA' + this.props.id, (data) => {
+            this.setState({
+                kraj : true
+            });
+         });
 
     }
 
@@ -112,7 +116,11 @@ class PregledTakmicenja extends Component {
             if (response.data.success) {
                 
                 let vrijeme = {'sati' : this.state.vrijeme.sati, 'minute' : this.state.vrijeme.minute, 'sekunde' : (new Date(response.data.takmicenje.trajanje) - new Date())/1000};
-                
+               
+                if (vrijeme.sekunde <= 0 && response.data.takmicenje.trajanje != null) 
+                    this.socket.emit('TIMER', {
+                        id : this.props.id
+                    });
                 this.setState({
                     takmicenjeInfo : response.data.takmicenje,
                     takmicarskeGrupe : response.data.takmicarskeGrupe,
@@ -273,7 +281,12 @@ class PregledTakmicenja extends Component {
                             <li>
                                 <Sat sekunde={this.state.vrijeme.sekunde} takmicenjeId={this.state.takmicenjeInfo.id}/>
                             </li>
-                            : null
+                            : 
+                        this.state.kraj == true ?
+                        <li>
+                            <p className="napomena">Takmičenje je završeno.</p>
+                        </li>
+                        : null
                         }
                     </ul>
                 </div>

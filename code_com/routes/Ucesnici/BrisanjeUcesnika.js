@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../../client/src/base/baza.js');
 
-const {Ucesnici, UcesniciTakmicarskeGrupe, Lokacija, Korisnici} = sequelize.import('../../client/src/base/models/Models.js');
+const {Ucesnici, UcesniciTakmicarskeGrupe, Lokacija, Korisnici, Verzije, Pitanja} = sequelize.import('../../client/src/base/models/Models.js');
 
 module.exports = {
 
@@ -46,7 +46,27 @@ module.exports = {
                                     }
                                 })
                                 .then(done => {
-                                    resole('done');
+                                    Verzije.destroy({
+                                        where : {
+                                            ucesniciId : ucesniciIDs
+                                        }
+                                    })
+                                    .then(done => {
+                                        Pitanja.destroy({
+                                            where : {
+                                                ucesniciId : ucesniciIDs
+                                            }
+                                        })
+                                        .then(done => {
+                                            resole('done');
+                                        })
+                                        .catch(error => {
+                                            reject(error.message);
+                                        })
+                                    })
+                                    .catch(error => {
+                                        reject(error.message);
+                                    })
                                 })
                                 .catch(error => {
                                     reject(error.message);

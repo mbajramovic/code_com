@@ -90,6 +90,8 @@ module.exports = {
                                         testSpecification.require_symbols = [];
                                         testSpecification.replace_symbols = [];
                                         testSpecification.id = testSpecification._id;
+                                        if (task.dataValues.language === 'QBasic')
+                                            testSpecification.use_pipes = "true";
                                         testovi.push(testSpecification);
                                     }
                                     var task = tasks[ii];

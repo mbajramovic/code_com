@@ -48,6 +48,8 @@ module.exports = {
                             testSpecification.substring = testSpecification.substring ? "true" : "false";
                             testSpecification.require_symbols = [];
                             testSpecification.replace_symbols = [];
+                            if (task.dataValues.language === 'QBasic')
+                                testSpecification.use_pipes = "true";
                             testSpecification.id = testSpecification._id;
                             testovi.push(testSpecification);
                         }
@@ -100,7 +102,7 @@ module.exports = {
                                 }
                                 else   {
                                     console.log(error);
-                                    reject(stringify(Odgovori.BUILDSERVICE_ERROR));
+                                    reject(JSON.stringify(Odgovori.BUILDSERVICE_ERROR));
                                 }
                         });
                     })

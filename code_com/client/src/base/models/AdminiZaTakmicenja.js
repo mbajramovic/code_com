@@ -9,40 +9,17 @@ const AdminiZaTakmicenja = db.define('admini_za_takmicenja', {
 		autoIncrement : true
     },*/
     ime : {
-        type : Sequelize.STRING,
-        validate : {
-            is : {
-                args: ["^[a-z]+$",'i'],
-                msg : 'Ime mora sadržavati isključivo slova'
-            } 
-        }
+        type : Sequelize.STRING
+       
     },
     prezime : {
-        type : Sequelize.STRING,
-        validate : {
-            is : {
-                args: ["^[a-z]+$",'i'],
-                msg : 'Prezime mora sadržavati isključivo slova'
-            } 
-        }
+        type : Sequelize.STRING
     }, 
     grad : {
-        type : Sequelize.STRING,
-        validate : {
-            is : {
-                args: ["^[a-z]+$",'i'],
-                msg : 'Grad mora sadržavati isključivo slova'
-            } 
-        }
+        type : Sequelize.STRING
     },
     titula : {
-        type : Sequelize.STRING,
-        validate : {
-            is : {
-                args: ["^[a-z]+$",'i'],
-                msg : 'Titula mora sadržavati isključivo slova'
-            } 
-        }
+        type : Sequelize.STRING
     }
 });
 
@@ -55,10 +32,10 @@ const AdminiZaTakmicenja = db.define('admini_za_takmicenja', {
 
 AdminiZaTakmicenja.dodajNovogAdmina = function(admin, korId, htmlencode, fn) {
     AdminiZaTakmicenja.create({
-        ime : htmlencode(admin.ime),
-        prezime : htmlencode(admin.prezime),
-        grad : htmlencode(admin.grad),
-        titula : htmlencode(admin.titula),
+        ime : (admin.ime),
+        prezime : (admin.prezime),
+        grad : (admin.grad),
+        titula : (admin.titula),
         korisniciId : korId
     })
     .then(noviAdmin => {

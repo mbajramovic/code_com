@@ -79,6 +79,8 @@ router.route('/rangLista').get(rangLista.getRangLista);
 //pdf
 router.route('/zadaciUPdf').post(pdf.zadaci);
 router.route('/pristupniPodaci').post(pdf.ucesnici);
+router.route('/ucesniciSaPodacima').post(pdf.ucesniciSaPodacima);
+router.route('/administratoriUPdf').post(pdf.administratori);
 
 // buildservice
 router.route('/getProgramStatus').get(programStatus.getProgramStatus);

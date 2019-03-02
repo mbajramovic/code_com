@@ -29,7 +29,7 @@ module.exports = {
         }
     
         else {
-            Korisnici.povuciKorisnika(htmlencode(korisnik.korisnickoIme), htmlencode(korisnik.lozinka), function(success, data) {
+            Korisnici.povuciKorisnika((korisnik.korisnickoIme), (korisnik.lozinka), function(success, data) {
                 if (success) {
                     AdminiZaTakmicenja.povuciAdmina(data.id, function(_success, _data) {
                         if (_success) {

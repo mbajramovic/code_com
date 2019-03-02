@@ -13,6 +13,10 @@ import Takmicenje from './Takmicenje.js';
 import Osoblje from './Osoblje.js';
 import PregledTakmicenja from './PregledTakmicenja.js';
 
+import Sesija from '../Sesija.js';
+
+const axios = require('axios');
+
 
 class AdminPage extends Component {
     
@@ -35,7 +39,7 @@ class AdminPage extends Component {
                             <button className="menuButton" onMouseOver={() => this.prikaziOpcije(1)}>Osoblje</button>
                             <ul className="menuZaOsoblje">
                                 <li><button className="podmenuButton" onClick={() => this.izbor(1)}>Novi administrator takmičenja</button></li>
-                                <li><button className="podmenuButton">Pregled registrovanog osoblja</button></li>
+                                <li><button className="podmenuButton" onClick={() => this.printOsoblje()}>Pregled registrovanog osoblja</button></li>
                             </ul>
                         </li>
                         <li style={{borderTop : '1px solid white'}}> 
@@ -83,6 +87,37 @@ class AdminPage extends Component {
     logout() {
 
         this.props.onLogout();
+    }
+
+    printOsoblje() {
+        
+   
+        axios.post('/administratoriUPdf', {
+            takmicarskaGrupaId : 0,
+
+            korisnickoIme : Sesija.korisnik.korisnickoIme,
+            token : Sesija.korisnik.token
+        })
+        .then(response => { 
+            axios.get('/download',{
+                params : {
+                    'fileName' : 'Administratori.pdf'
+                },
+                responseType: 'blob'
+            }).then(response => {
+                const file = new Blob(
+                    [response.data], 
+                    {type: 'application/pdf'});
+                const fileUrl = URL.createObjectURL(file);
+                window.open(fileUrl);
+            }).catch(error => {
+                alert(error.toString());
+            });
+        })
+        .catch(error => {
+            alert(error.toString());
+        })
+    
     }
 
     render() {

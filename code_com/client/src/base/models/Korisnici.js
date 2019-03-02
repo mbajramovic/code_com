@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../baza.js');
+const Op = Sequelize.Op
 
 const Korisnici = db.define('korisnici', {
     /*id : {
@@ -20,15 +21,21 @@ const Korisnici = db.define('korisnici', {
 });
 
 Korisnici.dodajNovogKorisnika = function(_korisnickoIme, _lozinka, fn) {
-    Korisnici.create({
-        korisnickoIme : _korisnickoIme,
-        lozinka : _lozinka
-    })
-    .then(noviKorisnik => {
-        return fn('yes', noviKorisnik);
+    validiraj(_korisnickoIme)
+    .then(kIme => {
+        Korisnici.create({
+            korisnickoIme : kIme,
+            lozinka : _lozinka
+        })
+        .then(noviKorisnik => {
+            return fn('yes', noviKorisnik);
+        })
+        .catch(error => {
+            return fn(null, error.message);
+        });
     })
     .catch(error => {
-        return fn(null, error.message);
+        return fn(null, error);
     });
 }
 
@@ -49,6 +56,31 @@ Korisnici.povuciKorisnika = function(_korisnickoIme, _lozinka, fn) {
     .catch(error => {
         return fn(null, error.message);
     })
+}
+
+function validiraj(kIme) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (kIme.includes('ucesnik'))
+                resolve(kIme);
+            Korisnici.findAll({
+                where : {
+                    korisnickoIme : {
+                         [Op.like] : "%" + kIme + "%"
+                     }
+                }
+            })
+            .then(korisnici => {
+                if (korisnici.length > 0)
+                    resolve(kIme + korisnici.length);
+                else 
+                    resolve(kIme);
+            })
+            .catch(error => {
+                reject(error.message);
+            })
+        }, 5000);
+    });
 }
 
 module.exports = function(db, DataTypes) {

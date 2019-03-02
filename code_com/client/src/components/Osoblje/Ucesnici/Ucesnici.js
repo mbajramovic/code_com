@@ -234,6 +234,34 @@ class Ucesnici extends Component {
         })
     }
 
+    pristupniPodaciOpsirno() {
+        axios.post('/ucesniciSaPodacima', {
+            takmicarskaGrupaId : this.state.trenutnaGrupa.id,
+
+            korisnickoIme : Sesija.korisnik.korisnickoIme,
+            token : Sesija.korisnik.token
+        })
+        .then(response => { 
+            axios.get('/download',{
+                params : {
+                    'fileName' : 'UcesniciSaPodacima.pdf'
+                },
+                responseType: 'blob'
+            }).then(response => {
+                const file = new Blob(
+                    [response.data], 
+                    {type: 'application/pdf'});
+                const fileUrl = URL.createObjectURL(file);
+                window.open(fileUrl);
+            }).catch(error => {
+                alert(error.toString());
+            });
+        })
+        .catch(error => {
+            alert(error.toString());
+        })
+    }
+
     render() {   
         var prikaz = this.state.prikazi;
         const noviUcesnik = () => <NoviUcesnik takmGrupaId={this.state.trenutnaGrupa.id} brojUcesnika={this.state.ucesnici.length}/>;
@@ -349,6 +377,14 @@ class Ucesnici extends Component {
                                     <table><tbody><tr>
                                         <td><img src={noviUcesnik_logo} ></img></td>
                                         <td><button className="ucesnik_button" onClick={this.pristupniPodaci.bind(this)}>Pristupni podaci za učesnike</button></td>
+                                    </tr></tbody></table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table><tbody><tr>
+                                        <td><img src={noviUcesnik_logo} ></img></td>
+                                        <td><button className="ucesnik_button" onClick={this.pristupniPodaciOpsirno.bind(this)}>Učesnici sa podacima</button></td>
                                     </tr></tbody></table>
                                 </td>
                             </tr>

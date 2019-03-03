@@ -1,3 +1,0 @@
-DIM a$(100)
-INPUT "Upisi svoje ime! ", a$
-PRINT "Zdravo, "; a$

@@ -67,6 +67,9 @@ input[type=number] {
 .takmicenje, .takmicarskeGrupe {
     text-align: center;
     margin: 12px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    padding-bottom: 3px;
 }
 
 .takmicenje:hover, .takmicarskeGrupe:hover {

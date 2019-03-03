@@ -28,6 +28,7 @@ router.post('/', upload.single('file'), function(req, res) {
             } 
         })
         .then(zadatak => {
+            console.log(zadatak.taskId);
             var formdata = {
                 name : 'program', 
                 task : zadatak.taskId, 

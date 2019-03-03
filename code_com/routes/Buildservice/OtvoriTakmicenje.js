@@ -92,7 +92,7 @@ module.exports = {
                                         testSpecification.replace_symbols = [];
                                         testSpecification.id = testSpecification._id;
                                         if (task.dataValues.language === 'QBasic')
-                                            testSpecification.use_pipes = "true";
+                                            testSpecification.running_params.use_pipes = "true";
                                         testovi.push(testSpecification);
                                     }
                                    

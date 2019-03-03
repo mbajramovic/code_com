@@ -55,6 +55,9 @@ module.exports = {
             case -1:
                 rez = 'Program se ne kompajlira.';
                 break;
+            case 8:
+                rez = 'Program output not found.';
+                break;
         }
 
         return rez;

@@ -49,7 +49,7 @@ module.exports = {
                             testSpecification.require_symbols = [];
                             testSpecification.replace_symbols = [];
                             if (task.dataValues.language === 'QBasic')
-                                testSpecification.use_pipes = "true";
+                                testSpecification.running_params.use_pipes = "true";
                             testSpecification.id = testSpecification._id;
                             testovi.push(testSpecification);
                         }
@@ -59,13 +59,17 @@ module.exports = {
                         task = task.dataValues;
                         task.test_specifications = testovi;
                         task.running_params = {'timeout' : 10, 'vmem' : 1000};
-
+                        console.log(task);
                         task.compiler_features = [];
                         task.compile = task.compile ? "true" : "false";
                         task.run = task.run ? "true" : "false";
                         task.test = task.test ? "true" : "false";
                         task.profile = task.profile ? "true" : "false";
                         task.debug = task.debug ? "true" : "false";
+
+                        if (task.language[0] === 'C' && task.language.length > 1)
+                            task.language = "C++";
+                        console.log(JSON.stringify(task));
                         request.get(
                             buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task),
                             function(error, response, body) {

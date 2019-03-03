@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main() {
+    /*int a, b;
+	scanf("%d %d", &a, &b);
+	int c;
+	if (b % 2 == 0 || a %2 == 0) c = a + b;
+	else c = a-b;
+	printf("%d", c);*/
+	//printf("Hello");
+	
+	char s[20];
+	printf("Upisi svoje ime! ");
+	scanf("%s", s);
+	printf("Zdravo, %s.", s);
+    return 0;
+}

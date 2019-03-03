@@ -35,7 +35,8 @@ AutotestoviRezultati.dodajRezultat = function(rezultat, fn) {
         attributes : ['id', 'stdin', 'expected'],
         where : {
             zadaciId : rezultat.zadatakId,
-            _id : rezultat.id
+            _id : rezultat.id,
+            language : rezultat.jezik
         }
     })
     .then(autotest => {

@@ -34,6 +34,10 @@ module.exports = {
                     });
 
                     if (i == takmicenje.takmicarskeGrupe.length - 1) {
+                        if (takmicenje.clanoviKomisije.length == 0)
+                            res.end(JSON.stringify({
+                                'success' : 'yes'
+                            }));
                         for (let j = 0; j < takmicenje.clanoviKomisije.length; j++) {
                             AdminiTakmicenja.create({
                                 takmicenjaId : dodanoTakmicenje.id,
@@ -102,84 +106,85 @@ module.exports = {
                                 adminiZaTakmicenjaId : admini[j]
                             })
                             .then(created => {
+                                if (j == admini.length - 1) {
+                                    AdminiTakmicenja.findAll({
+                                        where : {
+                                            takmicenjaId : takmicenje.id
+                                        },
+                                        attributes : ['adminiZaTakmicenjaId']
+                                    })
+                                    .then(adminiZaTakmicenja => {
+                                        //if (adminiZaTakmicenja.length > admini.length) 
+                                            let adminiZaTakmicenje = [];
+                                            for (var ii = 0; ii < adminiZaTakmicenja.length; ii++)
+                                                adminiZaTakmicenje.push(adminiZaTakmicenja[ii].adminiZaTakmicenjaId);
+                                            for (let ii = 0; ii < adminiZaTakmicenje.length; ii++) {
+                                                if (!admini.includes(adminiZaTakmicenje[ii])) {
+                                                    AdminiTakmicenja.destroy({
+                                                        where : {
+                                                            takmicenjaId : takmicenje.id,
+                                                            adminiZaTakmicenjaId : adminiZaTakmicenje[ii]
+                                                        }
+                                                    });
+                                                }
+                                                if (ii == adminiZaTakmicenje.length - 1) {
+                                                    for (let i = 0; i < grupe.length; i++) {
+                                                        if (grupe[i].id == null) {
+                                                            TakmicarskeGrupe.create({
+                                                                naziv : grupe[i].naziv,
+                                                                brojTakmicara : grupe[i].brojTakmicara,
+                                                                brojZadataka : grupe[i].brojZadataka,
+                                                                takmicenjaId : takmicenje.id
+                                                            })
+                                                            .then(grupa => {
+                                                                if (i == grupe.length - 1)
+                                                                    res.end(JSON.stringify({
+                                                                        'success' : 'yes'
+                                                                    }));
+                                                            })
+                                                            .catch(error => {
+                                                                console.log(error);
+                                                                res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                            });
+                                                        }
+                                                        else {
+                                                            TakmicarskeGrupe.update(
+                                                                {
+                                                                    naziv : grupe[i].naziv,
+                                                                    brojTakmicara : grupe[i].brojTakmicara,
+                                                                    brojZadataka : grupe[i].brojZadataka
+                                                                },
+                                                                {
+                                                                    where : {
+                                                                        id : grupe[i].id
+                                                                    }
+                                                                }
+                                                            )
+                                                            .then(updatedGroup => {
+                                                                if (i == grupe.length - 1)
+                                                                    res.end(JSON.stringify({
+                                                                        'success' : 'yes'
+                                                                    }));
+                                                            })
+                                                            .catch(error => {
+                                                                console.log(error);
+                                                                res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                            });
+                                                        }
+                                                    }
+                                                }
+                                            }
+        
+                                        
+                                    })
+                                }
                             })
                             .catch(error => {
                                 console.log(error);
                                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                             })
                         }
-                        if (j == admini.length - 1) {
-                            AdminiTakmicenja.findAll({
-                                where : {
-                                    takmicenjaId : takmicenje.id
-                                },
-                                attributes : ['adminiZaTakmicenjaId']
-                            })
-                            .then(adminiZaTakmicenja => {
-                                //if (adminiZaTakmicenja.length > admini.length) 
-                                    let adminiZaTakmicenje = [];
-                                    for (var ii = 0; ii < adminiZaTakmicenja.length; ii++)
-                                        adminiZaTakmicenje.push(adminiZaTakmicenja[ii].adminiZaTakmicenjaId);
-                                    for (let ii = 0; ii < adminiZaTakmicenje.length; ii++) {
-                                        if (!admini.includes(adminiZaTakmicenje[ii])) {
-                                            AdminiTakmicenja.destroy({
-                                                where : {
-                                                    takmicenjaId : takmicenje.id,
-                                                    adminiZaTakmicenjaId : adminiZaTakmicenje[ii]
-                                                }
-                                            });
-                                        }
-                                        if (ii == adminiZaTakmicenje.length - 1) {
-                                            for (let i = 0; i < grupe.length; i++) {
-                                                if (grupe[i].id == null) {
-                                                    TakmicarskeGrupe.create({
-                                                        naziv : grupe[i].naziv,
-                                                        brojTakmicara : grupe[i].brojTakmicara,
-                                                        brojZadataka : grupe[i].brojZadataka,
-                                                        takmicenjaId : takmicenje.id
-                                                    })
-                                                    .then(grupa => {
-                                                        if (i == grupe.length - 1)
-                                                            res.end(JSON.stringify({
-                                                                'success' : 'yes'
-                                                            }));
-                                                    })
-                                                    .catch(error => {
-                                                        console.log(error);
-                                                        res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                                                    });
-                                                }
-                                                else {
-                                                    TakmicarskeGrupe.update(
-                                                        {
-                                                            naziv : grupe[i].naziv,
-                                                            brojTakmicara : grupe[i].brojTakmicara,
-                                                            brojZadataka : grupe[i].brojZadataka
-                                                        },
-                                                        {
-                                                            where : {
-                                                                id : grupe[i].id
-                                                            }
-                                                        }
-                                                    )
-                                                    .then(updatedGroup => {
-                                                        if (i == grupe.length - 1)
-                                                            res.end(JSON.stringify({
-                                                                'success' : 'yes'
-                                                            }));
-                                                    })
-                                                    .catch(error => {
-                                                        console.log(error);
-                                                        res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                                                    });
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                
-                            })
-                        }
+       
                     })
                 }
                

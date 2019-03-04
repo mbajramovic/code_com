@@ -18,7 +18,7 @@ module.exports = {
                         if (_success) {
                             // _data sadrzi novog admina
                             for (var i = 0; i < korisnik.odabranaTakmicenja.length; i++) {
-                                AdminiTakmicenja.novaVeza(data.id, korisnik.odabranaTakmicenja[i].id, function(__success, __data) {
+                                AdminiTakmicenja.novaVeza(_data.id, korisnik.odabranaTakmicenja[i].id, function(__success, __data) {
                                     if (__success == null) {
                                         console.log(__data);
                                         res.end(JSON.stringify(Odgovori.SERVER_ERROR));

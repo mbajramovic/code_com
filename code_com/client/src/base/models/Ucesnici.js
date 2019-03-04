@@ -17,9 +17,9 @@ const Ucesnici = db.define('ucesnici', {
 
 Ucesnici.dodajNovogUcesnika = function(ucesnik, idLokacije, idKorinika, htmlencode, fn) {
     Ucesnici.create({
-        ime : htmlencode(ucesnik.ime),
-        prezime : htmlencode(ucesnik.prezime),
-        maticniBroj : htmlencode(ucesnik.maticniBroj),
+        ime : (ucesnik.ime),
+        prezime : (ucesnik.prezime),
+        maticniBroj : (ucesnik.maticniBroj),
         lokacijaId : idLokacije,
         korisniciId : idKorinika
     })

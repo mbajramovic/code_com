@@ -136,6 +136,15 @@ module.exports = {
                         })
                         .then(adminiIDs => {
                             let admini = [];
+                            if (adminiIDs.length == 0) {
+                                res.end(JSON.stringify({
+                                    'success' : 'yes',
+                                    'takmicenje' : takmicenje,
+                                    'takmicarskeGrupe' : takmicarskeGrupe ,
+                                    'brojPitanja' : pitanja.length,
+                                    'admini' : admini
+                                }));
+                            }
                             for (let i = 0; i < adminiIDs.length; i++) {
                                 admini.push(adminiIDs[i].adminiZaTakmicenjaId);
                                     if (i == adminiIDs.length - 1)

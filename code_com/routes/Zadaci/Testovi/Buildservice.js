@@ -38,8 +38,8 @@ module.exports = {
                                     break;
                             }
                             var testSpecification = autotestovi[i].dataValues;
-                            testSpecification.running_params = {'stdin' : testSpecification.stdin, 'timeout' : testSpecification.timeout, 'vmem' : testSpecification.vmem == null ? 0 : testSpecification.vmem};
-                            testSpecification.expected = expected;
+                            testSpecification.running_params = {'stdin' : encodeURIComponent(testSpecification.stdin), 'timeout' : testSpecification.timeout, 'vmem' : testSpecification.vmem == null ? 0 : testSpecification.vmem};
+                            testSpecification.expected = encodeURIComponent(expected);
         
                             testSpecification.expected_exception = testSpecification.expected_exception ? "true" : "false";
                             testSpecification.expected_crash = testSpecification.expected_crash ? "true" : "false";
@@ -59,7 +59,7 @@ module.exports = {
                         task = task.dataValues;
                         task.test_specifications = testovi;
                         task.running_params = {'timeout' : 10, 'vmem' : 1000};
-                        console.log(task);
+                        task.language = encodeURIComponent(task.language);
                         task.compiler_features = [];
                         task.compile = task.compile ? "true" : "false";
                         task.run = task.run ? "true" : "false";
@@ -71,7 +71,7 @@ module.exports = {
                             task.language = "C++";
                         console.log(JSON.stringify(task));
                         request.get(
-                            buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task),
+                            encodeURIComponent(buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task)),
                             function(error, response, body) {
                                 if (!error && response.statusCode == 200) {
                                     console.log('k');
@@ -80,14 +80,14 @@ module.exports = {
                                         where : {
                                             zadaciId : task.zadaciId,
                                             taskId : taskId,
-                                            language : task.language
+                                            language : decodeURIComponent(task.language)
                                         }
                                     })
                                     .then(destroyed => {
                                         ZadatakTask.create({
                                             zadaciId : task.zadaciId,
                                             taskId : taskId,
-                                            language : task.language
+                                            language : decodeURIComponent(task.language)
                                         })
                                         .then(created => {
                                             resolve(JSON.stringify({

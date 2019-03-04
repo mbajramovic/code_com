@@ -80,8 +80,8 @@ module.exports = {
                                         var testSpecification = autotestovi[j].dataValues;/* {'id' : (j + 1).toString(), 'code' : '_main();', 'expected' : [autotestovi[j].izlaz], 'substring' : 'false', 'regex' : 'false', 'require_symbols' : [], 
                                                                 'replace_symbols' : [], 'global_top' : "", 'global_above_main' : "", "expected_exception" : "false", "ignore_whitespace" : "false",
                                                                 "expected_crash" : "false", "debug" : "true"};*/
-                                        testSpecification.running_params = {'stdin' : testSpecification.stdin, 'timeout' : testSpecification.timeout, 'vmem' : testSpecification.vmem == null ? 0 : testSpecification.vmem};
-                                        testSpecification.expected = expected;
+                                        testSpecification.running_params = {'stdin' : encodeURIComponent(testSpecification.stdin), 'timeout' : testSpecification.timeout, 'vmem' : testSpecification.vmem == null ? 0 : testSpecification.vmem};
+                                        testSpecification.expected = encodeURIComponent(expected);
 
                                         testSpecification.expected_exception = testSpecification.expected_exception ? "true" : "false";
                                         testSpecification.expected_crash = testSpecification.expected_crash ? "true" : "false";
@@ -100,7 +100,7 @@ module.exports = {
                                     task = task.dataValues;
                                     task.running_params = {'timeout' : 10, 'vmem' : 1000};
                                     task.test_specifications = testovi;
-                                    
+                                    task.language = encodeURIComponent(task.language);
                                     task.compiler_features = [];
                                     task.compile = task.compile ? "true" : "false";
                                     task.run = task.run ? "true" : "false";
@@ -108,7 +108,7 @@ module.exports = {
                                     task.profile = task.profile ? "true" : "false";
                                     task.debug = task.debug ? "true" : "false";
                                     request.get(
-                                        buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task),
+                                        (buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task)),
                                         function(error, response, body) {
                                             if (!error && response.statusCode == 200) {
                                                 let taskId = JSON.parse(body).data.id;
@@ -116,14 +116,14 @@ module.exports = {
                                                     where : {
                                                         zadaciId : zadaci[i].id,
                                                         taskId : taskId,
-                                                        language : task.language
+                                                        language : decodeURIComponent(task.language)
                                                     }
                                                 })
                                                 .then(destroyed => {
                                                     ZadatakTask.create({
                                                         zadaciId : zadaci[i].id,
                                                         taskId : taskId,
-                                                        language : task.language
+                                                        language : decodeURIComponent( task.language)
                                                     })
                                                     .then(done => {
                                                         if (i == zadaci.length - 1) {

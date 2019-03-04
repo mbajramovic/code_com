@@ -18,7 +18,7 @@ module.exports = {
         var idZadatka = req.query.zadatakId;
         var jezik = req.query.language;
         
-        request.get(buildervice_url.url + '/push.php?action=getProgramStatus&program=' + programId, function(error, response, body) {
+        request.get((buildervice_url.url + '/push.php?action=getProgramStatus&program=' + programId), function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 var odgovor = JSON.parse(body);
                 console.log(odgovor);

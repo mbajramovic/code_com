@@ -34,7 +34,7 @@ router.post('/', upload.single('file'), function(req, res) {
                 task : zadatak.taskId, 
                 program : fs.createReadStream(req.file.path)
             };
-            request.post(buildervice_url.url + '/push.php?action=addProgram', {formData : formdata}, function(err, ress, body) {
+            request.post((buildervice_url.url + '/push.php?action=addProgram'), {formData : formdata}, function(err, ress, body) {
                 if (!err && ress.statusCode == 200) {
                     try {
                         var odgovor = JSON.parse(body);

@@ -22,7 +22,7 @@ mysql > CREATE DATABASE code_com DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
 
 3. Kreirati korisnika kojima ima prava pristupa toj bazi:
 
-mysql > GRANT ALL PRIVILEGES ON code_com.* to code_com@localhost identified by '';
+mysql > GRANT ALL PRIVILEGES ON code_com.* to code_com@localhost identified with mysql_native_password by '';
 mysql> FLUSH PRIVILEGES;
 mysql> exit
 

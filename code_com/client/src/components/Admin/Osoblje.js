@@ -94,10 +94,19 @@ class Osoblje extends Component {
         })
     }
 
+    getKorIme(ime) {
+       ime = ime.replace('ž', 'z');
+       ime = ime.replace('š', 's');
+       ime = ime.replace('đ', 'd');
+       ime = ime.replace('č', 'c');
+       ime = ime.replace('ć', 'c');
+       return ime;
+    }
+
     dodajAdmina() {
         if (this.validacija()) {
-            var korIme =  this.state.ime.toLowerCase()[0] + '' + this.state.prezime.toLowerCase();
-            var loz = this.state.grad.toLowerCase() + '' + Math.floor(Math.random() * 101).toString();
+            var korIme =  this.getKorIme(this.state.ime.toLowerCase()[0])  + this.getKorIme(this.state.prezime.toLowerCase());
+            var loz = Math.random().toString(36).slice(2) + 1
             this.setState({
                 korisnickoIme : korIme,
                 lozinka : loz
@@ -118,11 +127,7 @@ class Osoblje extends Component {
                 if (response.data.success){ 
                     this.setState({
                         poruka : 
-                            <table><tbody>
-                                <tr><td colSpan="2">{response.data.data}</td></tr>
-                                <tr><td>Korisničko ime: </td><td>{response.data.korIme}</td></tr>
-                                <tr><td>Lozinka: </td><td>{response.data.loz}</td></tr>
-                            </tbody></table>,
+                           "Administrator takmičenja uspješno dodan. Pristupne podatke možete dobiti klikom na 'Pregled registrovanog osoblja'.",
                         uspjeh_greska : 'uspjeh'
                     });
                 }

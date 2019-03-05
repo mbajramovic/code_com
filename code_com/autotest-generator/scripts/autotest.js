@@ -85,7 +85,7 @@ const getConfigValues = () => {
 const patchConfigValues = (data) => {
     document.getElementById('id').value = data.id; 
     document.getElementById('name').value = data.name;
-    document.getElementById('language').value = data.language;
+    document.getElementById('language').value = window.localStorage.getItem('jezik');//data.language;
     document.getElementById('required_compiler').value = data.required_compiler;
     document.getElementById('preferred_compiler').value = data.preferred_compiler;
     document.getElementById('compiler_features').value = Helpers.concatStringArray(data.compiler_features);

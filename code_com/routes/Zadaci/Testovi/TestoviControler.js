@@ -74,7 +74,7 @@ module.exports = {
             }
             else {
                 let autotestovi = task.test_specifications;
-                for (let j = 0; j < 4; j++) {
+                /*for (let j = 0; j < 4; j++) {
                     let jezik;
                     switch(j) {
                         case 0:
@@ -93,7 +93,7 @@ module.exports = {
                             task.language = 'Pascal';
                             jezik = 'Pascal';
                             break;
-                    }
+                    }*/
 
                     Task.dodajTask(task, function(success, data) {
                         for (let i = 0; i < autotestovi.length; i++) {
@@ -101,7 +101,7 @@ module.exports = {
                             console.log(autotest);
 
                             autotest.zadaciId = zadaciId;
-                            autotest.language = jezik;
+                            autotest.language = task.language;
                        
                             Autotestovi.dodajAutotest(autotest, function(success, _data) {
                                 if (i == autotestovi.length - 1) {
@@ -118,7 +118,7 @@ module.exports = {
                         
                     });
                 }
-            }
+            //}
         });
     },
 
@@ -177,8 +177,70 @@ module.exports = {
                 res.send(JSON.stringify(task));
             });
             }
-            else
-                res.end();
+            else {
+                Task.findOne({
+                    where : {
+                        zadaciId : zadaciId
+                    }
+                })
+                .then(task => {
+                    if (task) {
+                        Autotestovi.findAll({
+                            where : {
+                                zadaciId : zadaciId,
+                                language : task.language
+                            }
+                        })
+                        .then(autotestovi => {
+                            var autotestoviArray = [];
+                            for(let i = 0; i < autotestovi.length; i++) {
+                                autotestovi[i].dataValues.running_params = {
+                                    'timeout' : autotestovi[i].dataValues.timeout,
+                                    'vmem' : autotestovi[i].dataValues.vmem,
+                                    'stdin' : autotestovi[i].dataValues.stdin
+                                };
+                                autotestovi[i].dataValues.expected_exception = autotestovi[i].dataValues.expected_exception.toString();
+                                autotestovi[i].dataValues.expected_crash = autotestovi[i].dataValues.expected_crash.toString();
+                                autotestovi[i].dataValues.ignore_whitespace = autotestovi[i].dataValues.ignore_whitespace.toString();
+                                autotestovi[i].dataValues.regex = autotestovi[i].dataValues.regex.toString();
+                                autotestovi[i].dataValues.substring = autotestovi[i].dataValues.substring.toString();
+                                autotestovi[i].dataValues.id = autotestovi[i].dataValues._id;
+                                /*var expected = [];
+            
+                                for (let j = 0;;j++) {
+                                    if (autotestovi[i].expected[j.toString()] != null)
+                                        expected.push(autotestovi[i].expected[j.toString()]);
+                                    else
+                                        break;
+                                }*/
+                                autotestovi[i].dataValues.expected = jsonToArray(autotestovi[i].dataValues.expected);
+                                autotestovi[i].dataValues.replace_symbols = jsonToArray(autotestovi[i].dataValues.replace_symbols);
+                                autotestovi[i].dataValues.require_symbols = jsonToArray(autotestovi[i].dataValues.require_symbols);
+                            }
+                            task.dataValues.test_specifications = autotestovi;
+                                // zbog servisa za kreiranje testova
+                            task.dataValues.compile = task.dataValues.compile.toString();
+                            task.dataValues.run = task.dataValues.run.toString();
+                            task.dataValues.test = task.dataValues.test.toString();
+                            task.dataValues.profile = task.dataValues.profile.toString();
+                            task.dataValues.debug = task.dataValues.debug.toString();
+            
+                            task.dataValues.compiler_features = jsonToArray(task.dataValues.compiler_features);
+                            Task.findAll({
+                                where : {
+                                    zadaciId : zadaciId
+                                }
+                            })
+                            .then(tasks => {
+                                task.dataValues.id = task.id + tasks.length;
+                                res.send(JSON.stringify(task));
+                            });
+                        });
+                    }
+                    else    
+                        res.end();
+                })
+            }
         })
     }
 } 

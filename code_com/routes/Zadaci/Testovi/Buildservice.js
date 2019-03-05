@@ -71,7 +71,7 @@ module.exports = {
                             task.language = "C++";
                         console.log(JSON.stringify(task));
                         request.get(
-                            encodeURIComponent(buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task)),
+                            (buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task)),
                             function(error, response, body) {
                                 if (!error && response.statusCode == 200) {
                                     console.log('k');

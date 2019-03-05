@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
-import logo from '../../../images/zadatak_logo.png';
-import nz_logo from '../../../images/novizadatak_logo.png';
 
 import NoviZadatak from './NoviZadatak.js';
 
-import renderHTML from 'react-render-html';
 import Sesija from '../../Sesija.js';
 
 
@@ -37,7 +33,6 @@ class PregledZadatka extends Component {
             autorInd : -1,
             html : null,
             jezik : "C",
-
             greska : null
         };
         this.povuciZadatak = this.povuciZadatak.bind(this);
@@ -96,11 +91,13 @@ class PregledZadatka extends Component {
 
         })
         .then(response => {
+   
             var w = window.open();
             w.localStorage.setItem("Zamger_URL_Autotest", '/autotestovi'); 
             w.localStorage.setItem('id', this.state.zadatak.id);
             w.localStorage.setItem('jezik', this.state.jezik);
             w.document.write(response.data);
+
         })
         .catch(error => {
             this.setState({
@@ -150,14 +147,16 @@ class PregledZadatka extends Component {
                     <p className="naslov">Zadatak {zadatak.redniBroj}</p>
                     <div className="nivo_4">
                        
-                        <button className="ucesnik_button">
+                        <table className="ucesnik_button" style={{border : "0px"}}>
+                        <tbody><tr><td>
                         <select style={{marginRight : '2%'}} onChange={(e) => this.updateJezik(e)}>
                             <option value="C">C</option>
                             <option value="C++">C++</option>
                             <option value="Pascal">Pascal</option>
                             <option value="QBasic">QBasic</option>
-                        </select>
-                        <a href="#" style={{color : 'green'}} onClick={(e) => this.openGenerator(e)}>Prikaži definisane autotestove</a></button>
+                        </select></td><td>
+                        <button  style={{color : 'green', background : 'transparent', border : '0px', textDecoration : 'underline'}} onClick={(e) => this.openGenerator(e)}>Prikaži definisane autotestove</button></td>
+                        </tr></tbody></table>
                         <p className="naslov">Naslov:</p>
                         <h4>{zadatak.naslov}</h4>
                         <p className="naslov">Tekst:</p>
@@ -188,9 +187,9 @@ class PregledZadatka extends Component {
                         }
                     </div></div>
                     : <div>
-                         {this.state.html != null ?
-                        <Redirect from='/admin_takmicenja/zadaci/*' to='/admini_takmicenja/zadaci/zadatak/autotestovi'/> : null}
+                         
                         <Route exact path='/admini_takmicenja/zadaci/zadatak/uredi' component={noviZadatak}></Route> 
+                      
                       </div>
                     }
                 </div>

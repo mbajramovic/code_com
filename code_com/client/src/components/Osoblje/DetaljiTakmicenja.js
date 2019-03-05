@@ -182,7 +182,7 @@ class PregledTakmicenja extends Component {
         //alert(this.state.takmicarskeGrupe.length);
         const osnovneInformacije = () => <OsnovneInformacije informacije={this.state.takmicenjeInfo}/>;
         const pravila = () => <Pravila grupe={this.state.takmicarskeGrupe} vrsta={this.state.takmicenjeInfo.vrsta} jezik={this.state.takmicenjeInfo.programskiJezik}/>;
-        const zadaci = () => <Zadaci grupe={this.state.takmicarskeGrupe} adminId={this.props.idAdmina}  zavrseno={this.state.takmicenjeInfo.zavrseno}/>;
+        const zadaci = () => <Zadaci id={this.props.id} grupe={this.state.takmicarskeGrupe} adminId={this.props.idAdmina}  zavrseno={this.state.takmicenjeInfo.zavrseno}/>;
         const ucesnici = () => <Ucesnici grupe={this.state.takmicarskeGrupe} adminId={this.props.idAdmina} takmId={this.props.id} zavrseno={this.state.takmicenjeInfo.zavrseno} history={this.props.history}/>
         const liveTakmicenje = () => <LiveTakmicenje grupe={this.state.takmicarskeGrupe}/>
         const rangLista = () => <RangLista grupe={this.state.takmicarskeGrupe} zavrseno={this.state.takmicenjeInfo.zavrseno}/>
@@ -206,7 +206,7 @@ class PregledTakmicenja extends Component {
                             </Link>
                         </li>
                         <li>
-                            <Link to={`/admin_takmicenja/detalji/${ this.props.id }/zadaci`}>
+                            <Link to={`/admin_takmicenja/detalji/zadaci`}>
                                 <button onClick={this.oznaci.bind(this)}>Zadaci</button>
                             </Link>
                         </li>
@@ -293,7 +293,7 @@ class PregledTakmicenja extends Component {
                 <div className="infocontainer">
                     <Route path='/admin_takmicenja/detalji/:id/info' component={osnovneInformacije}></Route>
                     <Route exact path='/admin_takmicenja/detalji/:id/pravila' component={pravila} ></Route>
-                    <Route exact path='/admin_takmicenja/detalji/:id/zadaci' component={zadaci}></Route>
+                    <Route exact path='/admin_takmicenja/detalji/zadaci' component={zadaci}></Route>
                     <Route exact path='/admin_takmicenja/detalji/ucesnici' component={ucesnici}></Route>
                     <Route exact path='/admin_takmicenja/detalji/:id/live' component={liveTakmicenje}></Route>
                     <Route exact path='/admin_takmicenja/detalji/:id/:zavrseno/ranglista' component={rangLista}></Route>

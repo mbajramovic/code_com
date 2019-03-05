@@ -229,7 +229,7 @@ function textInRowFirst(doc, text, x, heigth) {
     doc.y = heigth;
     doc.x = x;
     doc.fillColor('black')
-    doc.font('fonts/Playfair_Display/PlayfairDisplay-Regular.ttf').text(text, {
+    doc.font('fonts/News_Cycle/NewsCycle-Regular.ttf').text(text, {
       paragraphGap: 5,
       indent: 5,
       align: 'justify',
@@ -242,7 +242,7 @@ function textInRowFirst(doc, text, x, heigth) {
     doc.y = heigth;
     doc.x = x;
     doc.fillColor('black')
-    doc.font('fonts/Playfair_Display/PlayfairDisplay-Bold.ttf').text(text, {
+    doc.font('fonts/News_Cycle/NewsCycle-Bold.ttf').text(text, {
       paragraphGap: 5,
       indent: 5,
       align: 'justify',

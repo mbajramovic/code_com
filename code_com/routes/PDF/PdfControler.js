@@ -221,7 +221,7 @@ module.exports = {
 
         }
         else
-            res.end(JSON.stringify(Odgovori.UNAUTHORIZED));
+            res.end(JSON.stringify(Odgovori.UNAUTHORIZED)); 
     }
 }
 

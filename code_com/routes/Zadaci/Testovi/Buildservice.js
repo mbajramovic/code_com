@@ -32,14 +32,22 @@ module.exports = {
                         for (let i = 0; i < autotestovi.length; i++) {
                             let expected = [];
                             for (var k = 0; ; k++) {
-                                if (autotestovi[i].expected[k.toString()] != null)
-                                    expected.push(autotestovi[i].expected[k.toString()]);
+                                if (autotestovi[i].expected[k.toString()] != null) {
+                                    var expectedValue = encodeURIComponent (autotestovi[i].expected[k.toString()]);
+                                    expectedValue = expectedValue.replace("%0A", "\n");
+                                    console.log(expectedValue);
+                                    expected.push(expectedValue);
+                                    console.log("pushed");
+                                }
                                 else
                                     break;
                             }
+                            
                             var testSpecification = autotestovi[i].dataValues;
-                            testSpecification.running_params = {'stdin' : encodeURIComponent(testSpecification.stdin), 'timeout' : testSpecification.timeout, 'vmem' : testSpecification.vmem == null ? 0 : testSpecification.vmem};
-                            testSpecification.expected = encodeURIComponent(expected);
+                            testSpecification.running_params = {'stdin' : (encodeURIComponent(testSpecification.stdin)).replace("%0A", "\n"), 'timeout' : testSpecification.timeout, 'vmem' : testSpecification.vmem == null ? 0 : testSpecification.vmem};
+                            console.log(testSpecification.expected);
+                            testSpecification.expected = (expected);
+                            console.log(testSpecification.expected); 
         
                             testSpecification.expected_exception = testSpecification.expected_exception ? "true" : "false";
                             testSpecification.expected_crash = testSpecification.expected_crash ? "true" : "false";
@@ -59,7 +67,7 @@ module.exports = {
                         task = task.dataValues;
                         task.test_specifications = testovi;
                         task.running_params = {'timeout' : 10, 'vmem' : 1000};
-                        task.language = encodeURIComponent(task.language);
+                        task.language = encodeURIComponent(task.language); 
                         task.compiler_features = [];
                         task.compile = task.compile ? "true" : "false";
                         task.run = task.run ? "true" : "false";
@@ -74,7 +82,7 @@ module.exports = {
                             (buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task)),
                             function(error, response, body) {
                                 if (!error && response.statusCode == 200) {
-                                    console.log('k');
+                                    console.log(body);
                                     let taskId = JSON.parse(body).data.id;
                                     ZadatakTask.destroy({
                                         where : {

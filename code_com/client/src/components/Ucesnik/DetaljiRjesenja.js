@@ -172,7 +172,7 @@ class DetaljiRjesenja extends Component {
                                 </tr>
                                 <tr>
                                     <td>Dobijeni izlaz:</td>
-                                    <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '35px', border : '0px'}} value={autotest.ocekivaniIzlaz}></textarea></td>
+                                    <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '35px', border : '0px'}} value={autotest.izlaz}></textarea></td>
                                 </tr>
                                 <tr>
                                     <td>Nalaz testa:</td>

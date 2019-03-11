@@ -74,7 +74,6 @@ module.exports = {
                         task.test = task.test ? "true" : "false";
                         task.profile = task.profile ? "true" : "false";
                         task.debug = task.debug ? "true" : "false";
-
                         if (task.language[0] === 'C' && task.language.length > 1)
                             task.language = "C++";
                         console.log(JSON.stringify(task));

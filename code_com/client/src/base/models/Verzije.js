@@ -10,7 +10,7 @@ const Verzije = db.define('verzije', {
         type : Sequelize.STRING
     },
     compileResult_output : {
-        type : Sequelize.STRING(1000)
+        type : Sequelize.STRING(3000)
     },
     programId : {
         type : Sequelize.INTEGER

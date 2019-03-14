@@ -79,7 +79,7 @@ function getLista(takmicarskeGrupeIDs, req, res) {
                 "`verzije->zadaci`.`id` AS `verzije.zadaci.id`, `verzije->zadaci`.`redniBroj` AS `verzije.zadaci.redniBroj`, `verzije->zadaci`.`naslov` AS `verzije.zadaci.naslov` FROM `verzijes` AS `verzije` "+
                 "LEFT OUTER JOIN `ucesnicis` AS `verzije->ucesnici` ON `verzije`.`ucesniciId` = `verzije->ucesnici`.`id` LEFT OUTER JOIN `korisnicis` AS `verzije->ucesnici->korisnici` ON `verzije->ucesnici`.`korisniciId` = `verzije->ucesnici->korisnici`.`id` LEFT OUTER JOIN `lokacijas` as `verzije->ucesnici->lokacija` ON `verzije->ucesnici`.`lokacijaId` = `verzije->ucesnici->lokacija`.`id` LEFT OUTER JOIN `zadacis` AS `verzije->zadaci` ON `verzije`.`zadaciId` = `verzije->zadaci`.`id`  WHERE `verzije`.`id` = "+ 
                 "(SELECT MAX(`autotestovi_rezultatis`.`verzijeId`) FROM `autotestovi_rezultatis`, `verzijes` WHERE `autotestovi_rezultatis`.`verzijeId` = `verzijes`.`id` AND `verzijes`.`ucesniciId` = `verzije`.`ucesniciId` and `verzijes`.`zadaciId` = `verzije`.`zadaciId`) AND "+
-                "`verzije`.`id` IN (" + verzijeIDs.toString() + ")"
+                "`verzije`.`id` IN (" + verzijeIDs.toString() + ") ORDER BY `verzije.id` DESC"
             )
             .then(rezultati => {
 
@@ -140,6 +140,7 @@ function getLista(takmicarskeGrupeIDs, req, res) {
                     ucesnici_zadaci.sort(function(a, b) {
                         return b.ukupno - a.ukupno
                     });
+                    
                     res.end(JSON.stringify({
                         'data' : ucesnici_zadaci,
                         'zadaci' : _zadaci

@@ -1,0 +1,3 @@
+DIM a(200)
+INPUT "Upisi svoje ime! "; a$
+PRINT "Zdravo, "; a$

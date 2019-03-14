@@ -144,7 +144,7 @@ class PredaneVerzije extends Component {
                 var verzije = response.data.verzije;
                 for (let i = 0; i < verzije.length; i++) {
                     verzije[i].status = tumac.compileTumac(verzije[i].status);
-                   
+                    verzije[i].poruka = '';
                     for (let j = 0; j < verzije[i].autotest_rezultati.length; j++) {
                         let at = verzije[i].autotest_rezultati[j];
                         verzije[i].autotest_rezultati[j] = {
@@ -203,6 +203,7 @@ class PredaneVerzije extends Component {
                         var glavniRezultat = response.data.rezultat;
                         verzija.status = tumac.glavniTumac(glavniRezultat.status);
                         verzija.compile_status = tumac.compileTumac(glavniRezultat.compile_result.status);
+                        verzija.poruka = response.data.poruka;
                         var atRez = [];
                         for (var i = 0; i < rezultati.length; i++) {
                             var autotest = {'status' : tumac.testTumac(rezultati[i].status), 'izlaz' : rezultati[i].run_result.output, 
@@ -229,6 +230,7 @@ class PredaneVerzije extends Component {
                    
                     else {
                         verzija.status = response.data.data;
+                        verzija.poruka = response.data.poruka;
                         var verzije = this.state.verzije;
                         verzije[this.state.programIDs[0].indeksVerzije] = verzija;
                         this.setState({ verzije : verzije});
@@ -315,7 +317,7 @@ class PredaneVerzije extends Component {
                         <a href="#" onClick={this.prikaziDetalje.bind(this)}>Rjesenje br. {i + 1}</a>
                     </Link>
                 </td>
-                <td>{verzija.status }  
+                <td>{verzija.status}<br/>{verzija.poruka}<br/>  
                     <Link to={`/detalji/rjesenje/${verzija.vrijeme}/${verzija.id}`}>
                         <a href="#" onClick={this.prikaziDetalje.bind(this)}> Detalji</a>
                     </Link>

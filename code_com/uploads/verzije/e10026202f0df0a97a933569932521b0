@@ -1,0 +1,2 @@
+INPUT "Upisi svoje ime! " a$
+PRINT "Zdravo, "; a$

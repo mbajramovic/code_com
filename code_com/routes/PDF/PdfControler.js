@@ -46,7 +46,7 @@ module.exports = {
                             res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
                             res.setHeader('Content-type', 'application/pdf');
                             doc.y = 300;
-                            doc.font('fonts/Playfair_Display/PlayfairDisplay-Regular.ttf').text(content, 50, 50);
+                            doc.font('fonts/News_Cycle/NewsCycle-Regular.ttf').text(content, 50, 50);
                             doc.pipe(res);
                             doc.end();
                         }

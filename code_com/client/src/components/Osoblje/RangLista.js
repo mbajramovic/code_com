@@ -33,6 +33,7 @@ class RangLista extends Component {
 
         this.evaluirajPonovo = this.evaluirajPonovo.bind(this);
         this.ucitajRezultate = this.ucitajRezultate.bind(this);
+        this.rangListaUpdate = this.rangListaUpdate.bind(this);
 
         this.socket = io(server.ip + ':' + server.port);
         this.socket.on('RANG_LISTA', (data) => {
@@ -56,9 +57,72 @@ class RangLista extends Component {
 
         this.setState({
             prikazi : false,
-            trenutnaGrupa : odabranaGrupa
+            odabranaGrupa : odabranaGrupa
         })
         this.povuciListu(event.target.value);
+    }
+
+    rangListaUpdate(e) {
+        var value = e.target.value;
+        axios.get('/ranglista', {
+            params : {
+                takmicarskaGrupaId : this.state.odabranaGrupa.id,
+                vrsta : 'ucesnici',
+
+                korisnickoIme : Sesija.korisnik.korisnickoIme,
+                token : Sesija.korisnik.token
+            }
+        })
+        .then(lista => {
+            if (value === '1') {
+                axios.post('/rangListaUPdf', {
+                    korisnickoIme : Sesija.korisnik.korisnickoIme,
+                    token : Sesija.korisnik.token,
+                    zadaci : lista.data.zadaci,
+                    lista : lista.data.data
+                })
+                .then(response => {
+                    axios.get('/download',{
+                        params : {
+                            'fileName' : 'RangLista.pdf'
+                        },
+                        responseType: 'blob'
+                    }).then(response => {
+                        const file = new Blob(
+                            [response.data], 
+                            {type: 'application/pdf'});
+                        const fileUrl = URL.createObjectURL(file);
+                        window.open(fileUrl);
+                    }).catch(error => {
+                        alert(error.toString());
+                    });
+                })
+            }
+            else {
+                axios.post('/rangListaSaPodacimaUPdf', {
+                    korisnickoIme : Sesija.korisnik.korisnickoIme,
+                    token : Sesija.korisnik.token,
+                    zadaci : lista.data.zadaci,
+                    lista : lista.data.data
+                })
+                .then(response => {
+                    axios.get('/download',{
+                        params : {
+                            'fileName' : 'RangListaP.pdf'
+                        },
+                        responseType: 'blob'
+                    }).then(response => {
+                        const file = new Blob(
+                            [response.data], 
+                            {type: 'application/pdf'});
+                        const fileUrl = URL.createObjectURL(file);
+                        window.open(fileUrl);
+                    }).catch(error => {
+                        alert(error.toString());
+                    });
+                })
+            }
+        })
     }
 
     povuciListu(id) {
@@ -210,26 +274,28 @@ class RangLista extends Component {
         var naslovi = this.state.zadaci != null ? this.state.zadaci.map((zadatak) => (
             <th>{zadatak.redniBroj} - {zadatak.naslov}</th>
         )) : null;
-
-        var ranglista = this.state.rangLista != null ? this.state.rangLista.map((item, i) => (
-            <tr id="cel">
-                <td>{i + 1}</td>
-                <td>{item.korisnickoIme}</td>
-                {this.props.zavrseno != 0 ?
-                <td>{item.ime + ' ' + item.prezime}</td>
-                :
-                null
-                }
-                {item.zadaci.map((zadatak, j) => (
-                    <td>{zadatak.ukupno}</td>
-                ))}
-                <td>{item.ukupno}</td>
-            </tr>
-        )) : null;
+        var ranglista = null;
+        if (this.state.rangLista != null) {
+            ranglista = this.state.rangLista != null ? this.state.rangLista.map((item, i) => (
+                <tr id="cel">
+                    <td>{i + 1}</td>
+                    <td>{item.korisnickoIme}</td>
+                    {this.props.zavrseno != 0 ?
+                    <td>{item.ime + ' ' + item.prezime}</td>
+                    :
+                    null
+                    }
+                    {item.zadaci.map((zadatak, j) => (
+                        <td>{zadatak.ukupno}</td>
+                    ))}
+                    <td>{item.ukupno}</td>
+                </tr>
+            )) : null;
+        }
         
 
         return (
-            <Router>
+            
                 <div>
                     <div>
                         <p className="naslov">Takmičarska grupa</p>
@@ -238,6 +304,20 @@ class RangLista extends Component {
                     <div>
                         <p className="naslov">Rang lista</p>
                         <div className="nivo_3">
+                            <p className="naslov">PDF Export</p>
+                                <table style={{marginLeft: '2%', marginBottom : '2%'}}>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="radio" name="vrsta" value="1" onClick={(e) => this.rangListaUpdate(e)}></input></td>
+                                             <td><label for="1">Rang lista sa korisničkim imenima učesnika</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" name="vrsta" value="2" onClick={(e) => this.rangListaUpdate(e)}></input></td>
+                                            <td><label for="2">Rang lista sa podacima (ime i škola) učesnika</label></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            
                             <table>
                                 <tbody>
                                     <tr id="cel">
@@ -259,7 +339,7 @@ class RangLista extends Component {
                         </div>
                     </div>
                 </div>
-            </Router>
+            
         );
     }
 }

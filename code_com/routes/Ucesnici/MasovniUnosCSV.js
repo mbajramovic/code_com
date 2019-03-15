@@ -17,56 +17,78 @@ router.post('/', upload.single('file'), function(req, res) {
     if(req.session.rola == 'admin_takmicenja' && Sesija.isOK(korisnik)) {
         var takmicarskeGrupeId = req.body.takmicarskaGrupaId;
         let i = 0, j = 0;
+        loginPodaci(takmicarskeGrupeId)
+        .then(broj => {
+            fs.createReadStream('uploads/' + req.file.filename)
+            .pipe(parse({delimiter : ','}))
+            .on('data', function(ucesnik) {
+    
+                var lokacija = {'drzava' : '', 'kanton' : '', 'opcina' : '', 'grad' : '', 'skola' : ucesnik[2]};
+                Lokacija.dodajNovuLokaciju(lokacija, htmlencode, function(s, d)  {
+                    if (s) {
 
-        fs.createReadStream('uploads/' + req.file.filename)
-        .pipe(parse({delimiter : ','}))
-        .on('data', function(ucesnik) {
-
-            var lokacija = {'drzava' : '', 'kanton' : '', 'opcina' : '', 'grad' : '', 'skola' : ''};
-            Lokacija.dodajNovuLokaciju(lokacija, htmlencode, function(s, d)  {
-                if (s) {
-                    Korisnici.dodajNovogKorisnika(ucesnik[0], ucesnik[1], function(success, data) {
-                        if (success) {
-                            var ucesnik = {'ime' : '', 'prezime' : '', 'maticniBroj' : ''};
-                            i++;
-                            Ucesnici.dodajNovogUcesnika(ucesnik, d.id, data.id, htmlencode, function(_success, _data) {
-                                if(!_success) {
-                                    console.log(_data);
-                                    res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                                }
-                                else { 
-                                    UcesniciTakmicarskeGrupe.novaVeza(_data.id, takmicarskeGrupeId, function(__success, __data) {
-                                        if (!__success) {
-                                            console.log(__data);
+                            let korIme = broj > 8 ? 'ucesnik' + (broj + i++ + 1) : 'ucesnik0' + (broj +i++ + 1);
+                            let lozinka = Math.random().toString(36).slice(2) + broj + 1;
+                            Korisnici.dodajNovogKorisnika(korIme, lozinka, function(success, data) {
+                                if (success) {
+                                    var _ucesnik = {'ime' : ucesnik[0], 'prezime' : ucesnik[1], 'maticniBroj' : ''};
+                                    Ucesnici.dodajNovogUcesnika(_ucesnik, d.id, data.id, htmlencode, function(_success, _data) {
+                                        if(!_success) {
+                                            console.log(_data);
                                             res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                                         }
-                                        else
-                                            j++;
-                                        if (i == j)
-                                            res.end(JSON.stringify({
-                                                'success' : 'yes'
-                                            }));
+                                        else { 
+                                            UcesniciTakmicarskeGrupe.novaVeza(_data.id, takmicarskeGrupeId, function(__success, __data) {
+                                                if (!__success) {
+                                                    console.log(__data);
+                                                    res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                                }
+                                                else {
+                                                    j++;
+                                                }
+                                                if (i == j)
+                                                    res.end(JSON.stringify({
+                                                        'success' : 'yes'
+                                                    }));
+                                            });
+                                        }
                                     });
                                 }
+                                else  {
+                                    console.log(data);
+                                    res.end(JSON.stringify(Odgovori.SERVER_ERROR));
+                                }
                             });
-                        }
-                        else  {
-                            console.log(data);
-                            res.end(JSON.stringify(Odgovori.SERVER_ERROR));
-                        }
-                    });
-                }
+                    }
+                })
             })
+            .on('error', function(error) {
+                res.end(JSON.stringify(Odgovori.CSV_ERROR));
+            })
+            .on('end', function() {
+            
+            });
         })
-        .on('error', function(error) {
-            res.end(JSON.stringify(Odgovori.CSV_ERROR));
-        })
-        .on('end', function() {
-        
-        });
+       
     }
     else
         res.end(JSON.stringify(Odgovori.UNAUTHORIZED));
 });
+
+
+function loginPodaci(takGrupa) {
+    return new Promise(function(resolve, reject) {
+        setTimeout(() => {
+            UcesniciTakmicarskeGrupe.findAll({
+                where : {
+                    takmicarskeGrupeId : takGrupa
+                }
+            })
+            .then(ucesnici => {
+                resolve(ucesnici.length);
+            });
+        }, 1000);
+    })
+}
 
 module.exports = router;

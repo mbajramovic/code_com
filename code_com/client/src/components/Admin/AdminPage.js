@@ -12,6 +12,7 @@ import '../../css/common.css';
 import Takmicenje from './Takmicenje.js';
 import Osoblje from './Osoblje.js';
 import PregledTakmicenja from './PregledTakmicenja.js';
+import Lozinka from './Lozinka.js';
 
 import Sesija from '../Sesija.js';
 
@@ -43,6 +44,9 @@ class AdminPage extends Component {
                             </ul>
                         </li>
                         <li style={{borderTop : '1px solid white'}}> 
+                            <button className="menuButton" onClick={() => this.izbor(3)}>Promjena <i>default</i>-ne lozinke</button>
+                        </li>
+                        <li style={{borderTop : '1px solid white'}}> 
                             <button className="menuButton" onClick={this.logout.bind(this)}>Odjava sa sistema</button>
                         </li>
                     </ul>
@@ -58,6 +62,7 @@ class AdminPage extends Component {
         prikaz_opcija_local.push(<Takmicenje />);
         prikaz_opcija_local.push(<Osoblje />);
         prikaz_opcija_local.push(<PregledTakmicenja />);
+        prikaz_opcija_local.push(<Lozinka />);
         
 
         prikaz_podopcija_local.push('menuZaTakmicenje');

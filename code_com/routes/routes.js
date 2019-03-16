@@ -19,9 +19,6 @@ var postZadaci = require('./Zadaci/PostZadaciControler.js');
 var getUcesnici = require('./Ucesnici/GetUcesniciControler.js');
 var postUcesnici = require('./Ucesnici/PostUcesniciControler.js');
 
-
-
-
 var router = express.Router();
 
 // R U T E
@@ -92,5 +89,6 @@ router.route('/otvoriTakmicenje').post(pocetakTakmicenja.otvoriTakmicenje);
 router.route('/login').post(pomocneRute.login);
 router.route('/logout').get(pomocneRute.logout);
 router.route('/download').get(pomocneRute.download);
+router.route('/novaLozinka').post(pomocneRute.novaLozinka);
 
 module.exports = router;

@@ -58,6 +58,24 @@ Korisnici.povuciKorisnika = function(_korisnickoIme, _lozinka, fn) {
     })
 }
 
+Korisnici.povuciKorisnikaAdmin = function(_korisnickoIme, fn) {
+    Korisnici.findOne({
+        attributes : ['id'],
+        where : {
+            korisnickoIme : _korisnickoIme
+        }
+    })
+    .then(korisnik => {
+        if (korisnik)
+            return fn('yes', korisnik);
+        else
+            return fn(null, 'Nepostojeći korisnik.');
+    })
+    .catch(error => {
+        return fn(null, error.message);
+    })
+}
+
 function validiraj(kIme) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {

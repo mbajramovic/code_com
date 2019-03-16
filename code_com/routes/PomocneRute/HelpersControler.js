@@ -5,6 +5,7 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
 const Sesija = require('./Sesija.js');
+const Odgovori = require('../ServerOdgovori');
 const {Ucesnici, Korisnici, AdminiZaTakmicenja} = sequelize.import('../../client/src/base/models/Models.js');
 
 module.exports = {
@@ -12,20 +13,45 @@ module.exports = {
         var korisnik = req.body;
         var token = generisiToken(korisnik);
         
-        if (korisnik.korisnickoIme == 'admin' && korisnik.lozinka == 'admin') {
+        if (korisnik.korisnickoIme == 'admin') {
            
             req.session.korisnik = 'admin';
             req.session.rola = 'administrator';
             
             korisnik.token = token;
             Sesija.dodajKorisnika(korisnik);
-
-            res.end(JSON.stringify({
-                'success' : 'yes',
-                'rola' : 'administrator',
-                'id' : true,
-                'korisnik' : korisnik
-            }));
+            if (korisnik.lozinka === 'admin') 
+                Korisnici.povuciKorisnikaAdmin('admin', function(success, data) {
+                    if (success) 
+                        res.end(JSON.stringify({
+                            'success' : null,
+                            'msg' : 'Nepostojeći korisnik.'
+                        }));
+                    
+                    else
+                        res.end(JSON.stringify({
+                            'success' : 'yes',
+                            'rola' : 'administrator',
+                            'id' : true,
+                            'korisnik' : korisnik
+                        }));
+                });
+            else {
+                Korisnici.povuciKorisnika(korisnik.korisnickoIme, korisnik.lozinka, function(success, data) {
+                    if (success) 
+                        res.end(JSON.stringify({
+                            'success' : 'yes',
+                            'rola' : 'administrator',
+                            'id' : true,
+                            'korisnik' : korisnik
+                        }));
+                    else 
+                        res.end(JSON.stringify({
+                            'success' : null,
+                            'msg' : data
+                        }));
+                });
+            }
         }
     
         else {
@@ -91,6 +117,39 @@ module.exports = {
             res.contentType("application/pdf");
             res.send(data);
         });
+    },
+
+    novaLozinka : function(req, res) {
+        var korisnik = {korisnickoIme : req.body.korisnickoIme, token : req.body.token};
+        if (req.session.rola === 'administrator' && Sesija.isOK(korisnik)) {
+            Korisnici.povuciKorisnikaAdmin(korisnik.korisnickoIme, function(success, data) {
+                if (success) {
+                    Korisnici.update({
+                        lozinka : req.body.lozinka
+                    }, {
+                        where : {
+                            korisnickoIme : 'admin'
+                        }
+                    })
+                    .then(updated => {
+                        res.end(JSON.stringify({
+                            'success' : 'yes'
+                        }));
+                    });
+                }
+                else {
+                    Korisnici.dodajNovogKorisnika('admin', req.body.lozinka, function(success, data) {
+                        if (success) {
+                            res.end(JSON.stringify({
+                                'success' : 'yes'
+                            }));
+                        }
+                    });
+                }
+            });
+        }
+        else 
+            res.end(JSON.stringify(Odgovori.UNAUTHORIZED));
     }
 }
 

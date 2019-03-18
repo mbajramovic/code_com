@@ -56,8 +56,7 @@ class UcesnikPage extends Component {
     }
 
     povuciInformacije() {
-        document.getElementById("mySidenav").style.width = "0";        
-        document.getElementById("mySidenav").style.height = "0";
+        
         axios.get('/informacijeOTakmicenju', {
             params : {
                 id : this.state.id,
@@ -90,6 +89,11 @@ class UcesnikPage extends Component {
     }
 
     povuciZadatke() {
+        if (document.getElementById("mySidenav") != null) {
+            document.getElementById("mySidenav").style.width = "0";
+          
+            document.getElementById("mySidenav").style.height = "0";
+        }
         axios.get('/zadaci', {
             params : {
                 takmicarskeGrupeId : this.state.takmicarskaGrupa.id,

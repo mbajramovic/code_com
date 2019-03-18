@@ -36,6 +36,9 @@ class Postavka extends Component {
     }
     
     povuciZadatak(nextProps) {
+        console.log(  document.getElementById("mySidenav"));
+        document.getElementById("mySidenav").style.width = "0";        
+        document.getElementById("mySidenav").style.height = "0";
         axios.get('/zadatak', {
             params : {
                 id : nextProps ? nextProps.match.params.id : this.props.match.params.id,
@@ -110,6 +113,9 @@ class PregledZadatka extends Component {
     }
 
     prikazUpdate() {
+        console.log(  document.getElementById("mySidenav"));
+        document.getElementById("mySidenav").style.width = "0";        
+        document.getElementById("mySidenav").style.height = "0";
         this.setState({prikaz : true});
     }
 

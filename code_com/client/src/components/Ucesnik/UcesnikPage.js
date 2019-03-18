@@ -103,12 +103,12 @@ class UcesnikPage extends Component {
         })
         .then(response => {
             if (response.data.success)
-                this.setState({zadaci : response.data.data, upute : []});
+                this.setState({zadaci : response.data.data});
             else
-                this.setState({error : response.data.data, upute : []});
+                this.setState({error : response.data.data});
         })
         .catch(error => {
-            this.setState({error : error.message, upute : []});
+            this.setState({error : error.message});
         })
     }
 

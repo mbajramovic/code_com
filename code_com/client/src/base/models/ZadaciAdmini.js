@@ -7,22 +7,24 @@ const ZadaciAdmini = db.define('zadaci_admini', {
     }
 });
 
-ZadaciAdmini.novaVeza = function(zadatakId, adminId, jeLiAutor, fn) {
-    return fn('yes', null);
-    /*ZadaciAdmini.create({
-        zadaciId : zadatakId,
-        adminiZaTakmicenjaId : parseInt(adminId),
-        autor : jeLiAutor
-    })
-    .then(veza => {
-        if (veza)
-            return fn('yes', null);
-        else
-            return fn(null, 'Akcija nije moguća trenutno.');
-    })
-    .catch(error => {
-        return fn(null, error.message);
-    })*/
+ZadaciAdmini.novaVeza = function(zadatakId, adminId, jeLiAutor, fn, uredi = false) {
+    if (!uredi)
+        ZadaciAdmini.create({
+            zadaciId : zadatakId,
+            adminiZaTakmicenjaId : parseInt(adminId),
+            autor : jeLiAutor
+        })
+        .then(veza => {
+            if (veza)
+                return fn('yes', null);
+            else
+                return fn(null, 'Akcija nije moguća trenutno.');
+        })
+        .catch(error => {
+            return fn(null, error.message);
+        });
+    else
+        return fn('yes', null);
 }
 
 module.exports = function(db, DataTypes) {

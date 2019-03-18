@@ -61,7 +61,7 @@ module.exports = {
                                 console.log(_data);
                                 res.end(JSON.stringify(Odgovori.SERVER_ERROR));
                             }
-                        })
+                        }, true)
                     }
                     else {
                         console.log(data);

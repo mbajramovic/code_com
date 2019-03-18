@@ -53,7 +53,7 @@ class Sat extends Component {
             sekunde : sekunde
         });
         
-        if (sekunde < 1 && !this.done) {
+        if (sekunde < 1 && !this.done && this.ucesnik != 1) {
             clearInterval(this.odbrojavaj);
             this.emit(this.state.takmicenjeId);
             this.done = true;

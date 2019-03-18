@@ -116,6 +116,9 @@ module.exports = {
                                                     if (_autotestovi) {
                                                         for (let i = 1; i <= _autotestovi.length; i++) {
                                                             var autotest = autotestovi[i.toString()];
+                                                            if (autotest == null)
+                                                                continue;
+                                                           
                                                             autotest.verzijeId = verzijaId;
                                                             autotest.zadatakId = idZadatka;
                                                             autotest.id = i;

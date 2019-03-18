@@ -66,12 +66,14 @@ class PregledZadatka extends Component {
         })
         .then(response => {
             if (response.data.success) {
+                console.log(response.data);
                 this.setState({
                     zadatak : response.data.data,
                     admini : response.data.admini,
                     autorInd : response.data.autorInd
                 }); }
             else {
+                console.log(response.data);
                 this.setState({
                     greska : response.data.data
                 });
@@ -136,7 +138,6 @@ class PregledZadatka extends Component {
         if (this.state.pregled == true) this.state.pregled = true;
         else
             this.state.pregled = !pregled;
-
 
         return (
             <Router>

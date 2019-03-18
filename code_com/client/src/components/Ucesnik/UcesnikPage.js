@@ -56,6 +56,8 @@ class UcesnikPage extends Component {
     }
 
     povuciInformacije() {
+        document.getElementById("mySidenav").style.width = "0";        
+        document.getElementById("mySidenav").style.height = "0";
         axios.get('/informacijeOTakmicenju', {
             params : {
                 id : this.state.id,
@@ -97,12 +99,12 @@ class UcesnikPage extends Component {
         })
         .then(response => {
             if (response.data.success)
-                this.setState({zadaci : response.data.data});
+                this.setState({zadaci : response.data.data, upute : []});
             else
-                this.setState({error : response.data.data});
+                this.setState({error : response.data.data, upute : []});
         })
         .catch(error => {
-            this.setState({error : error.message});
+            this.setState({error : error.message, upute : []});
         })
     }
 

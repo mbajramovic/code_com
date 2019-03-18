@@ -74,6 +74,8 @@ module.exports = {
                                         }
                                     })
                                     .then(testovi => {
+					var brTestova = testovi.length;
+					if (brTestova == 0) brTestova=1;
                                         for (let i = 1; i <= testovi.length; i++) {
                                             if (autotestovi[i.toString()].status == 1)
                                                 uspjesniTestovi++;
@@ -95,7 +97,7 @@ module.exports = {
                                             Verzije.update({
                                                 compileResult : rezultatTestiranja.compile_result.status,
                                                 compileResult_output : output,
-                                                bodovi : (uspjesniTestovi/testovi.length) * zad.bodovi,
+                                                bodovi : (uspjesniTestovi/brTestova) * zad.bodovi,
                                                 jezik : jezik
                                             }, {
                                                 where : {

@@ -74,8 +74,7 @@ module.exports = {
                                         for (var k = 0;;k++) {
                                             if (autotestovi[j].expected[k.toString()] != null) {
                                                 var expectedValue = encodeURIComponent (autotestovi[j].expected[k.toString()]);
-                                                expectedValue = expectedValue.replace("%0A", "\n");
-                                                console.log(expectedValue);
+                                                expectedValue = expectedValue.replace(/\%0A/g, "\n");                                                console.log(expectedValue);
                                                 expected.push(expectedValue);
                                                 console.log("pushed");
                                             }

@@ -73,7 +73,7 @@ module.exports = {
                                         let expected = [];
                                         for (var k = 0;;k++) {
                                             if (autotestovi[j].expected[k.toString()] != null) {
-                                                var expectedValue = encodeURIComponent (autotestovi[j].expected[k.toString()]);
+                                                var expectedValue = autotestovi[j].expected[k.toString()];
                                                 expectedValue = expectedValue.replace(/\%0A/g, "\n");                                                console.log(expectedValue);
                                                 expected.push(expectedValue);
                                                 console.log("pushed");
@@ -84,7 +84,7 @@ module.exports = {
                                         var testSpecification = autotestovi[j].dataValues;/* {'id' : (j + 1).toString(), 'code' : '_main();', 'expected' : [autotestovi[j].izlaz], 'substring' : 'false', 'regex' : 'false', 'require_symbols' : [], 
                                                                 'replace_symbols' : [], 'global_top' : "", 'global_above_main' : "", "expected_exception" : "false", "ignore_whitespace" : "false",
                                                                 "expected_crash" : "false", "debug" : "true"};*/
-                                        testSpecification.running_params = {'stdin' : (encodeURIComponent(testSpecification.stdin)).replace("%0A", "\n"), 'timeout' : testSpecification.timeout, 'vmem' : testSpecification.vmem == null ? 0 : testSpecification.vmem};
+                                        testSpecification.running_params = {'stdin' : (testSpecification.stdin).replace("%0A", "\n"), 'timeout' : testSpecification.timeout, 'vmem' : testSpecification.vmem == null ? 0 : testSpecification.vmem};
                                         testSpecification.expected = (expected);
 
                                         testSpecification.expected_exception = testSpecification.expected_exception ? "true" : "false";
@@ -112,7 +112,7 @@ module.exports = {
                                     task.profile = task.profile ? "true" : "false";
                                     task.debug = task.debug ? "true" : "false";
                                     request.get(
-                                        (buildervice_url.url + '/push.php?action=setTask&task=' + JSON.stringify(task)),
+                                        (buildervice_url.url + '/push.php?action=setTask&task=' + encodeURIComponent( JSON.stringify(task)) ),
                                         function(error, response, body) {
                                             if (!error && response.statusCode == 200) {
                                                 console.log(body);

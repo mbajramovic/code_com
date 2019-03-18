@@ -111,9 +111,9 @@ module.exports = {
                                     task.test = task.test ? "true" : "false";
                                     task.profile = task.profile ? "true" : "false";
                                     task.debug = task.debug ? "true" : "false";
-                                    request.get(
-                                        (buildervice_url.url + '/push.php?action=setTask&task=' + encodeURIComponent( JSON.stringify(task)) ),
-                                        function(error, response, body) {
+                                    var v = {task : JSON.stringify(task)};
+	                request.post((buildervice_url.url + '/push.php?action=setTask'), {formData : v}, 
+                            function(error, response, body) {
                                             if (!error && response.statusCode == 200) {
                                                 console.log(body);
                                                 let taskId = JSON.parse(body).data.id;

@@ -49,6 +49,7 @@ module.exports = {
             .then(zadatak => {
                 Zadaci.azurirajZadatak(zadatak, noviZadatak, htmlencode, function(success, data) {
                     if (success) {
+
                         ZadaciAdmini.novaVeza(zadatakId, noviZadatak.adminId, false, function(_success, _data) {
                             if (_success) {
                                 res.end(JSON.stringify({

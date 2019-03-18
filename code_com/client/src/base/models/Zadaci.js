@@ -81,13 +81,18 @@ Zadaci.dodajNoviZadatak = function(zadatak, htmlencode, fn) {
 }
 
 Zadaci.azurirajZadatak = function(zadatak, noviZadatak, htmlencode, fn) {
-    zadatak.update({
+    Zadaci.update({
         naslov : noviZadatak.naslov,
         tekst : noviZadatak.tekst,
         ulaz : noviZadatak.ulaz,
         izlaz : noviZadatak.izlaz,
         oblast : noviZadatak.oblast,
-        zadatak : zadatak.bodovi
+        bodovi : noviZadatak.bodovi
+    }, {
+    where : {
+        id : zadatak.id
+    }
+
     })
     .then(nz => {
         if (nz)

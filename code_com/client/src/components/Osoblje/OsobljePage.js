@@ -38,7 +38,7 @@ class OsobljePage extends Component {
    render() {
        const pocetna = () => <Pocetna idAdmina={this.state.id} history={this.props.history}/>
        const zavrsena= () => <ZavrsenaTakmicenja idAdmina={this.state.id}/>
-       const detaljiTakmicenja = () => <DetaljiTakmicenja  id={localStorage.getItem('takmicenjeId')} idAdmina={localStorage.getItem('adminId')}/>
+       const detaljiTakmicenja = () => <DetaljiTakmicenja  id={localStorage.getItem('takmicenjeId')} idAdmina={this.state.id}/>
       // const takmicenja = () => <Takmicenja/>;
        return (
         <Router history={this.props.history}>

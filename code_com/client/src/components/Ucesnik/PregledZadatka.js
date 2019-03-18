@@ -70,11 +70,11 @@ class Postavka extends Component {
                             <p className="naslov">Naslov:</p>
                             <h4>{zadatak.naslov}</h4>
                             <p className="naslov">Tekst:</p>
-                            <h4>{zadatak.tekst}</h4>
+                            <textarea readOnly style={{whiteSpace : 'pre-line', width : '500px', height : '150px'}}>{zadatak.tekst}</textarea>
                             <p className="naslov">Ulaz:</p>
-                            <h4>{zadatak.ulaz}</h4>
+                            <textarea readOnly  style={{whiteSpace : 'pre-line', width : '500px', height : '150px'}}>{zadatak.ulaz}</textarea>
                             <p className="naslov">Izlaz:</p>
-                            <h4>{zadatak.izlaz}</h4>
+                            <textarea readOnly  style={{whiteSpace : 'pre-line', width : '500px', height : '150px'}}>{zadatak.izlaz}</textarea>
                             <p className="naslov">Oblast:</p>
                             <h4>{zadatak.oblast}</h4>
                         </div>

@@ -8,9 +8,10 @@ const ZadaciAdmini = db.define('zadaci_admini', {
 });
 
 ZadaciAdmini.novaVeza = function(zadatakId, adminId, jeLiAutor, fn) {
-    ZadaciAdmini.create({
+    return fn('yes', null);
+    /*ZadaciAdmini.create({
         zadaciId : zadatakId,
-        adminiZaTakmicenjaId : adminId,
+        adminiZaTakmicenjaId : parseInt(adminId),
         autor : jeLiAutor
     })
     .then(veza => {
@@ -21,7 +22,7 @@ ZadaciAdmini.novaVeza = function(zadatakId, adminId, jeLiAutor, fn) {
     })
     .catch(error => {
         return fn(null, error.message);
-    })
+    })*/
 }
 
 module.exports = function(db, DataTypes) {

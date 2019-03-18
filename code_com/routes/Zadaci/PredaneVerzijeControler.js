@@ -225,7 +225,6 @@ module.exports = {
                                 grupisaneVerzije[zadatakId] = [];
                             grupisaneVerzije[zadatakId].push(verzije[i]);
                         }
-                        console.log(grupisaneVerzije);
                         var konacneVerzije = [];
                         for (var zadatak in grupisaneVerzije) {
                             konacneVerzije.push({'zadatakId' : zadatak, 'rezultati' : grupisaneVerzije[zadatak]})
@@ -243,7 +242,6 @@ module.exports = {
                                     konacneVerzije.push({'zadatakId' : zadaciIDs[i], 'rezultati' : []});
                             }
                         }
-                        console.log(konacneVerzije);
                         res.end(JSON.stringify({
                             'success' : 'yes',
                             'data' : konacneVerzije

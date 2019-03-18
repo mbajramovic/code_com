@@ -77,7 +77,7 @@ module.exports = {
 					var brTestova = testovi.length;
 					if (brTestova == 0) brTestova=1;
                                         for (let i = 1; i <= testovi.length; i++) {
-                                            if (autotestovi[i.toString()].status == 1)
+                                            if (autotestovi[i.toString()] != null && autotestovi[i.toString()].status == 1)
                                                 uspjesniTestovi++;
                                         }
                                         Zadaci.findOne({

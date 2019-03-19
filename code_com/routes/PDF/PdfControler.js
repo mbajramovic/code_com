@@ -325,6 +325,7 @@ module.exports = {
                     textInHeading(doc, 'Ukupno', 252 + 45 * (zadaci.length), 93);
                     brojac = 0;
                 }
+                else brojac++;
             }
             doc.end();
             writeStream.on('finish', function () {
@@ -377,8 +378,11 @@ module.exports = {
                 for (var j = 0; j < zadaci.length; j++) {
                     textInRowFirst(doc, lista[i].zadaci[j].ukupno, 320 + 35*j, 93 + 20*(brojac+1));
                 }
+                if (i % 30 == 0)
+                    textInRowFirst(doc, lista[i].ukupno, 320 + 35*(zadaci.length), 93 + 20 *(brojac));
+                else
                 textInRowFirst(doc, lista[i].ukupno, 320 + 35*(zadaci.length), 93 + 20 *(brojac+1));
-                
+
                 if (i % 29 == 0 && i != 0) {
                     duzina = 30;
                     if (lista.length - i < 30)
@@ -403,6 +407,8 @@ module.exports = {
                     textInHeading(doc, 'Ukupno', 320 + 35 * (zadaci.length), 93);
                     brojac = 0;
                 }
+                else
+                    brojac++;
             }
             doc.end();
             writeStream.on('finish', function () {

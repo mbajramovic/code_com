@@ -48,7 +48,7 @@ AutotestoviRezultati.dodajRezultat = function(rezultat, fn) {
                 }
             })
             .then(autotest_rezultat => {
-                if (autotest_rezultat) {
+                if (autotest_rezultat != null) {
                     autotest_rezultat.ulaz = autotest.stdin;
                     var expected = [];
                     for (let i = 0;;i++) {
@@ -71,7 +71,7 @@ AutotestoviRezultati.dodajRezultat = function(rezultat, fn) {
                         output : rezultat.run_result.output
                     })
                     .then(autotest_rezultat => {
-                        if (autotest_rezultat) {
+                        if (autotest_rezultat != null) {
                             autotest_rezultat.ulaz = autotest.stdin;
                             var expected = [];
                             for (let i = 0;;i++) {
@@ -100,7 +100,7 @@ AutotestoviRezultati.dodajRezultat = function(rezultat, fn) {
                 'ocekivani_izlaz' : [],
                 'status' : 2
             }
-            return fn('yes', autotest_rezultat);
+             fn('yes', autotest_rezultat);
         }
     });
 

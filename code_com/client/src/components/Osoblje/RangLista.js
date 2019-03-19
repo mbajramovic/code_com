@@ -44,8 +44,8 @@ class RangLista extends Component {
     
     componentWillMount() {
         this.povuciListu(this.state.odabranaGrupa.id);
-        if (this.state.zavrseno == true)
-            setInterval(this.ucitajRezultate, 5000);
+       // if (this.state.zavrseno == true)
+         //   setInterval(this.ucitajRezultate, 5000);
     }
 
     takmGrupaUpdate(event) {
@@ -184,7 +184,7 @@ class RangLista extends Component {
                     }
                 })
                 .then(response => {
-                    if (response.data.data != -1)
+                    if (response.data.data != -1) {
                         verzije.push({
                             'ucesnikId' : ucesnici[i].id, 
                             'zadatakId' : zadaci[j].id,
@@ -193,8 +193,9 @@ class RangLista extends Component {
                             'rjesenje' : response.data.rjesenje,
                             'jezik' : response.data.jezik
                         });
+                    }
                     if (i == ucesnici.length - 1 && j == zadaci.length - 1) {
-                        this.upload(verzije);
+                       this.upload(verzije);
                         this.brojac = verzije.length;
                     }
                 });
@@ -209,9 +210,10 @@ class RangLista extends Component {
             });
             return;
         }
-        for (let i = 0; i < verzije.length; i++) {
+        let i = 0;
+        for(let i = 0; i < verzije.length; i++) {
             let verzija = verzije[i];
-            var zip = new JSZip();
+            let zip = new JSZip();
             zip.file('ZADATAK' + Ekstenzije.getEkstenzija(verzija.jezik), verzija.rjesenje);
             zip.generateAsync({type : 'blob'}).then(zipBlob => {
                 let formData = new FormData();
@@ -221,7 +223,9 @@ class RangLista extends Component {
                 formData.append('language', verzija.jezik);
                 formData.append('korisnickoIme', Sesija.korisnik.korisnickoIme);
                 formData.append('token', Sesija.korisnik.token);
-                axios.post('/novaVerzija', formData).then(response => {
+                axios.post('/novaVerzija', formData)
+                .then(response => {
+
                     this.programIDs.push({
                         'programId' : response.data.programId,
                         'jezik' : verzija.jezik,
@@ -232,10 +236,42 @@ class RangLista extends Component {
             });
         }
     }
+        
+    
+
+    posaljiRjesenje(verzija) {
+        return new Promise((resolve, reject) => { 
+            setTimeout(() => {
+                var zip = new JSZip();
+            zip.file('ZADATAK' + Ekstenzije.getEkstenzija(verzija.jezik), verzija.rjesenje);
+            zip.generateAsync({type : 'blob'}).then(zipBlob => {
+                let formData = new FormData();
+                formData.append('file', zipBlob);
+                formData.append('id', verzija.novaVerzijaId);
+                formData.append('zadatakId', verzija.zadatakId);
+                formData.append('language', verzija.jezik);
+                formData.append('korisnickoIme', Sesija.korisnik.korisnickoIme);
+                formData.append('token', Sesija.korisnik.token);
+                axios.post('/novaVerzija', formData)
+                .then(response => {
+
+                    this.programIDs.push({
+                        'programId' : response.data.programId,
+                        'jezik' : verzija.jezik,
+                        'verzijaId' : verzija.novaVerzijaId,
+                        'zadatakId' : verzija.zadatakId
+                    });
+                    resolve(this.programIDs);
+                });
+            });
+            },10000);
+        })
+    }
 
     ucitajRezultate() {
         if (this.programIDs.length > 0) {
             let verzija = this.programIDs[0];
+            console.log(verzija);
             axios.get('/getProgramStatus', {
                 params : {
                     zadatakId : verzija.zadatakId,

@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+    int a, b;
+	std::string c, d;
+	getline(cin, c);
+getline(cin, d);
+std::cin >> b;
+	std::cout << "Pjesma: " << c << "\nPjevac: " << d << "\nGodina: " << b;
+}

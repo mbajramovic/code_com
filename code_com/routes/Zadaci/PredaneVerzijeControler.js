@@ -302,6 +302,7 @@ module.exports = {
                     filename : verzija.filename,
                     zadaciId : zadatakId,
                     ucesniciId : ucesnikId,
+                    jezik : verzija.jezik,
                     programId : -1
                 })
                 .then(nova_verzija => {

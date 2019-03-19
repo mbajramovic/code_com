@@ -17,7 +17,7 @@ module.exports = {
         var brojAutotestova = req.query.brojAutotestova;
         var idZadatka = req.query.zadatakId;
         var jezik = req.query.language;
-        
+        console.log(jezik);
         request.get((buildervice_url.url + '/push.php?action=getProgramStatus&program=' + programId), function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 var odgovor = JSON.parse(body);
@@ -70,7 +70,7 @@ module.exports = {
                                     Autotestovi.findAll({
                                         where : {
                                             zadaciId : idZadatka,
-                                            language : v.jezik
+                                            language :  v.jezik
                                         }
                                     })
                                     .then(testovi => {
@@ -115,10 +115,39 @@ module.exports = {
                                                     var autotestoviZaVratit = [];
                                                     if (_autotestovi) {
                                                         for (let i = 1; i <= _autotestovi.length; i++) {
-                                                            var autotest = autotestovi[i.toString()];
+                                                            let autotest = autotestovi[i.toString()];
+                                                            if (autotest == null) {
+                                                                if (i == _autotestovi.length) {
+                                                                    Zadaci.findOne({
+                                                                        attributes : ['takmicarskeGrupeId'],
+                                                                        where : {
+                                                                            id : idZadatka
+                                                                        }
+                                                                    })
+                                                                    .then(zadatak => {  
+                                                                        TakmicarskeGrupe.findOne({
+                                                                            where : {
+                                                                                id : zadatak.takmicarskeGrupeId
+                                                                            }
+                                                                        })
+                                                                        .then(grupa => {
+                                                                            rezultatTestiranja.takmicenjeId = grupa.takmicenjaId;
+                                                                            rezultatTestiranja.takmicarskaGrupaId = zadatak.takmicarskeGrupeId;
+                                                                            res.end(JSON.stringify({
+                                                                                'success' : 'yes',
+                                                                                'autotestovi' : autotestoviZaVratit, 
+                                                                                'rezultat' : rezultatTestiranja,
+                                                                                'poruka' : poruka
+                                                                            }));
+                                                                        });
+                                                                    });
+                                                                }
+                                                                else {
+                                                                    continue;
+                                                                }
+                                                            }
                                                             if (autotest == null)
                                                                 continue;
-                                                           
                                                             autotest.verzijeId = verzijaId;
                                                             autotest.zadatakId = idZadatka;
                                                             autotest.id = i;

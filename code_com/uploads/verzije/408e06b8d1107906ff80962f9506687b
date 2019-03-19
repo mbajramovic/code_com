@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main() {
+    int a,d;
+	char* b,c;
+	scanf("%s\n%s\n%d",&b, &c, &d);
+	printf("Pjesma: %s\nPjevač: %s\n Godina: %d\n", b, c, d);
+	return 0;
+
+}

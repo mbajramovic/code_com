@@ -50,38 +50,46 @@ class Pitanja extends Component {
     }
 
     postaviPitanje() {
-        axios.post('/novoPitanje', {
-            ucesnikId : this.state.ucesnikId,
-            tekstPitanja : this.state.tekstPitanja,
-            takmicenjeId : this.props.match.params.takmicenjeId,
-
-            korisnickoIme : Sesija.korisnik.korisnickoIme,
-            token : Sesija.korisnik.token
-        })
-        .then(response => {
-            if (response.data.success) {
-                var neodgovorenaPitanja = this.state.neodgovorenaPitanja;
-                neodgovorenaPitanja.push(response.data.pitanje);
-
-                var pitanje = response.data.pitanje;
-                this.socket.emit('NOVO_PITANJE', {
-                    pitanje : response.data.pitanje
-                })
-                this.setState({
-                    neodgovorenaPitanja : neodgovorenaPitanja,
-                    poruka : 'Pitanje je postavljeno.'
-                });
-            }
-            else
-                this.setState({
-                    greska : response.data.data
-                });
-        })
-        .catch(error => {
+        if (this.state.tekstPitanja.length == 0) {
             this.setState({
-                greska : error.toString()
+                poruka : 'Nije upisan tekst pitanja.'
+            });
+        }
+        else 
+            axios.post('/novoPitanje', {
+                ucesnikId : this.state.ucesnikId,
+                tekstPitanja : this.state.tekstPitanja,
+                takmicenjeId : this.props.match.params.takmicenjeId,
+
+                korisnickoIme : Sesija.korisnik.korisnickoIme,
+                token : Sesija.korisnik.token
             })
-        });
+            .then(response => {
+                if (response.data.success) {
+                    var neodgovorenaPitanja = this.state.neodgovorenaPitanja;
+                    neodgovorenaPitanja.push(response.data.pitanje);
+
+                    var pitanje = response.data.pitanje;
+                    this.socket.emit('NOVO_PITANJE', {
+                        pitanje : response.data.pitanje
+                    })
+                    this.setState({
+                        neodgovorenaPitanja : neodgovorenaPitanja,
+                        poruka : 'Pitanje je postavljeno.',
+                        tekstPitanja : ''
+                    });
+                    document.getElementById('pitanje_1').value = '';
+                }
+                else
+                    this.setState({
+                        greska : response.data.data
+                    });
+            })
+            .catch(error => {
+                this.setState({
+                    greska : error.toString()
+                })
+            });
     }
 
 
@@ -168,7 +176,7 @@ class Pitanja extends Component {
                         {this.state.greska.length > 0 ?
                             <p className="greska">{this.state.greska}</p>
                         : null}
-                        <textarea placeholder="Ovdje unesite tekst pitanja" className="maliText" onChange={this.tekstPitanjaUpdate.bind(this)}></textarea>
+                        <textarea placeholder="Ovdje unesite tekst pitanja" className="maliText" id="pitanje_1" onChange={this.tekstPitanjaUpdate.bind(this)}></textarea>
                         <div className="buttons">
                             <button onClick={this.postaviPitanje.bind(this)}>Pošalji pitanje</button>
                         </div>

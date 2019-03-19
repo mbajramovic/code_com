@@ -1,0 +1,10 @@
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+    int a, b;
+	std::string c, d;
+	std::cin >> c >> "\n" >> d >> "\n" >> b;
+	std::cout << "Pjesma: " << c << "\nPjevac: " << d << "\nGodina: " << b;
+}

@@ -21,6 +21,7 @@ class RangLista extends Component {
         
         this.programIDs = [];
         this.brojac = 0;
+        this.verzije = [];
         this.state = {
             grupe : this.props.grupe,
             odabranaGrupa : this.props.grupe != null ? this.props.grupe[0] : null,
@@ -34,6 +35,7 @@ class RangLista extends Component {
         this.evaluirajPonovo = this.evaluirajPonovo.bind(this);
         this.ucitajRezultate = this.ucitajRezultate.bind(this);
         this.rangListaUpdate = this.rangListaUpdate.bind(this);
+        this.upload = this.upload.bind(this);
 
         this.socket = io(server.ip + ':' + server.port);
         this.socket.on('RANG_LISTA', (data) => {
@@ -44,8 +46,8 @@ class RangLista extends Component {
     
     componentWillMount() {
         this.povuciListu(this.state.odabranaGrupa.id);
-       // if (this.state.zavrseno == true)
-         //   setInterval(this.ucitajRezultate, 5000);
+       if (this.state.zavrseno == true)
+           setInterval(this.ucitajRezultate, 5000);
     }
 
     takmGrupaUpdate(event) {
@@ -195,7 +197,8 @@ class RangLista extends Component {
                         });
                     }
                     if (i == ucesnici.length - 1 && j == zadaci.length - 1) {
-                       this.upload(verzije);
+                        this.verzije = verzije;
+                       setInterval( this.upload,5000);
                         this.brojac = verzije.length;
                     }
                 });
@@ -203,14 +206,15 @@ class RangLista extends Component {
         }
     }
 
-    upload(verzije) {
-        if (verzije.length == 0) {
+    upload() {
+        if (this.verzije.length == 0) {
+            clearInterval(this.upload);
             this.setState({
                 napomena : "Postupak ponovne evaluacije je završen."
             });
             return;
         }
-        let i = 0;
+       /* let i = 0;
         for(let i = 0; i < verzije.length; i++) {
             let verzija = verzije[i];
             let zip = new JSZip();
@@ -234,7 +238,30 @@ class RangLista extends Component {
                     });
                 });
             });
-        }
+        }*/
+        let verzija = this.verzije[0];
+        let zip = new JSZip();
+        zip.file('ZADATAK' + Ekstenzije.getEkstenzija(verzija.jezik), verzija.rjesenje);
+        zip.generateAsync({type : 'blob'}).then(zipBlob => {
+            let formData = new FormData();
+            formData.append('file', zipBlob);
+            formData.append('id', verzija.novaVerzijaId);
+            formData.append('zadatakId', verzija.zadatakId);
+            formData.append('language', verzija.jezik);
+            formData.append('korisnickoIme', Sesija.korisnik.korisnickoIme);
+            formData.append('token', Sesija.korisnik.token);
+            axios.post('/novaVerzija', formData)
+            .then(response => {
+
+                this.programIDs.push({
+                    'programId' : response.data.programId,
+                    'jezik' : verzija.jezik,
+                    'verzijaId' : verzija.novaVerzijaId,
+                    'zadatakId' : verzija.zadatakId
+                });
+                this.verzije.shift();
+            });
+        });
     }
         
     

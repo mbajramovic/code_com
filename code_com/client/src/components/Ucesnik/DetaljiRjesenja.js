@@ -154,25 +154,25 @@ class DetaljiRjesenja extends Component {
                         <td colSpan="3"><div className="container-verzije">
                         <div className="div-verzije" id={'prikaz_testa' + i.toString()}>
                             <table><tbody>
-                                <tr>
+                               {/* <tr>
                                     <td>Kod testa:</td>
                                     <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '150px'}} value={autotest.kod}></textarea></td>
                                 </tr>
                                 <tr>
                                     <td>U globalnom opsegu:</td>
                                     <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '50px'}} value={autotest.global}></textarea></td>
-                                </tr>
+                               </tr>*/}
                                 <tr>
                                     <td>Ulaz: </td>
-                                    <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '35px', border : '0px'}} value={autotest.ulaz}></textarea></td>
+                                    <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '65px', border : '0px'}} value={autotest.ulaz}></textarea></td>
                                 </tr>
                                 <tr>
                                     <td>Očekivani izlaz:</td>
-                                    <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '35px', border : '0px'}} value={autotest.ocekivaniIzlaz}></textarea></td>
+                                    <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '65px', border : '0px'}} value={autotest.ocekivaniIzlaz}></textarea></td>
                                 </tr>
                                 <tr>
                                     <td>Dobijeni izlaz:</td>
-                                    <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '35px', border : '0px'}} value={autotest.izlaz}></textarea></td>
+                                    <td><textarea readOnly style={{whiteSpace : 'pre-line', width : '300px', height : '65px', border : '0px'}} value={autotest.izlaz}></textarea></td>
                                 </tr>
                                 <tr>
                                     <td>Nalaz testa:</td>

@@ -117,10 +117,10 @@ class PregledTakmicenja extends Component {
                 
                 let vrijeme = {'sati' : this.state.vrijeme.sati, 'minute' : this.state.vrijeme.minute, 'sekunde' : (new Date(response.data.takmicenje.trajanje) - new Date())/1000};
                
-                if (vrijeme.sekunde <= 0 && response.data.takmicenje.trajanje != null) 
+                /*if (vrijeme.sekunde <= 0 && response.data.takmicenje.trajanje != null) 
                     this.socket.emit('TIMER', {
                         id : this.props.id
-                    });
+                    });*/
                 this.setState({
                     takmicenjeInfo : response.data.takmicenje,
                     takmicarskeGrupe : response.data.takmicarskeGrupe,

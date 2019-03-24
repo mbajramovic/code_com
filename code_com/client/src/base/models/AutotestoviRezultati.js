@@ -28,9 +28,9 @@ const AutotestoviRezultati = db.define('autotestovi_rezultati', {
 });
 
 AutotestoviRezultati.dodajRezultat = function(rezultat, fn) {
-    if (rezultat.run_result.output.length > 1000)
+    /*if (rezultat.run_result.output.length > 1000)
         rezultat.run_result.output = rezultat.run_result.output.substring(0, 1000);
-    console.log(rezultat.run_result.output.length);
+    console.log(rezultat.run_result.output.length);*/
     Autotestovi.findOne({
         attributes : ['id', 'stdin', 'expected'],
         where : {

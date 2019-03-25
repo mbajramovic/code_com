@@ -57,6 +57,7 @@ class PregledTakmicenja extends Component {
         }
 
         this.povuciTakmicenje = this.povuciTakmicenje.bind(this);
+        this.zavrsiTakmicenje = this.zavrsiTakmicenje.bind(this);
 
         this.socket = io(server.ip + ':' + server.port);
         this.socket.on('NOVO_PITANJE_PREGLED', (data) => {
@@ -178,6 +179,12 @@ class PregledTakmicenja extends Component {
         })
     }
 
+    zavrsiTakmicenje() {    
+        this.socket.emit('TIMER', {
+            id : this.props.id
+        });
+    }
+
     render() {
         //alert(this.state.takmicarskeGrupe.length);
         const osnovneInformacije = () => <OsnovneInformacije informacije={this.state.takmicenjeInfo}/>;
@@ -288,6 +295,9 @@ class PregledTakmicenja extends Component {
                         </li>
                         : null
                         }
+                        <li>
+                            <button style={{background : 'transparent', border : '1px solid #009973', borderRadius : '12px', marginTop : '2%', textAlign : 'right'}} onClick={() => this.zavrsiTakmicenje()}>Završi takmičenje</button>
+                        </li>
                     </ul>
                 </div>
                 <div className="infocontainer">

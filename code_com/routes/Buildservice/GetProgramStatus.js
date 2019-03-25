@@ -137,7 +137,7 @@ module.exports = {
                                                                                 'success' : 'yes',
                                                                                 'autotestovi' : autotestoviZaVratit, 
                                                                                 'rezultat' : rezultatTestiranja,
-                                                                                'poruka' : poruka
+                                                                                'poruka' : ''
                                                                             }));
                                                                         });
                                                                     });
@@ -155,7 +155,7 @@ module.exports = {
                                                             AutotestoviRezultati.dodajRezultat(autotest, function(success, data) {
                                                                 if (success) {
                                                                     autotest.ulaz = data.ulaz;
-                                                                    autotest.ocekivaniIzlaz = data.ocekivaniIzlaz;
+                                                                    autotest.ocekivaniIzlaz = data.ocekivaniIzlaz  + data.azurirano == true ? '[ažurirano]' : '';
                                                                     autotest.bodovi = data.status == 1 ? _autotestovi[i-1].bodovi : 0;
                                                                     AutotestoviRezultati.bodoviUpdate(data.id, autotest.bodovi, function(_success, _data) {
                                                                         if (_success) {
@@ -180,7 +180,7 @@ module.exports = {
                                                                                             'success' : 'yes',
                                                                                             'autotestovi' : autotestoviZaVratit, 
                                                                                             'rezultat' : rezultatTestiranja,
-                                                                                            'poruka' : poruka
+                                                                                            'poruka' : ''
                                                                                         }));
                                                                                     })
                                                                                     .catch(error => {
@@ -281,7 +281,7 @@ module.exports = {
                                                 AutotestoviRezultati.dodajRezultat(autotest, function(success, data) {
                                                     if (success) {
                                                         autotest.ulaz = data.ulaz;
-                                                        autotest.ocekivaniIzlaz = data.ocekivaniIzlaz;
+                                                        autotest.ocekivaniIzlaz = data.ocekivaniIzlaz + data.azurirano == true ? '[ažurirano]' : '';
                                                         AutotestoviRezultati.bodoviUpdate(data.id, 0, function(_success, _data) {
                                                             if (_success) {
                                                                 autotest.bodovi = 0;                                      
@@ -306,7 +306,7 @@ module.exports = {
                                                                                 'success' : 'yes',
                                                                                 'autotestovi' : autotestoviZaVratiti, 
                                                                                 'rezultat' : rezultatTestiranja,
-                                                                                'poruka' : 'Testovi nisu prošli.'
+                                                                                'poruka' : ''
                                                                             }));
                                                                         })
                                                                         .catch(error => {
@@ -387,7 +387,7 @@ module.exports = {
                                             AutotestoviRezultati.dodajRezultat(autotest, function(success, data) {
                                                 if (success) {
                                                     autotest.ulaz = data.ulaz;
-                                                    autotest.ocekivaniIzlaz = data.ocekivaniIzlaz;
+                                                    autotest.ocekivaniIzlaz = data.ocekivaniIzlaz  + data.azurirano == true ? '[ažurirano]' : '';;
                                                     AutotestoviRezultati.bodoviUpdate(data.id, 0, function(_success, _data) {
                                                         if (_success) {
                                                             autotest.bodovi = 0;                                      
@@ -412,7 +412,7 @@ module.exports = {
                                                                             'success' : 'yes',
                                                                             'autotestovi' : autotestoviZaVratiti, 
                                                                             'rezultat' : rezultatTestiranja,
-                                                                            'poruka' : 'Testovi nisu prošli.'
+                                                                            'poruka' : ''
                                                                         }));
                                                                     })
                                                                     .catch(error => {

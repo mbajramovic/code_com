@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <math.h>
+#define EPSILON 0.0001
+#define M 0.1
+
+int main () {
+    float a,b,c;
+    printf ("Unesite tri realna broja: ");
+    scanf ("%f %f %f",&a,&b,&c);
+    
+    if (a<=0 || b<=0 || c<=0)
+        printf ("Brojevi moraju biti pozitivni i veci od nule\n");
+    
+       
+    else if ((a+b)<c || (a+c)<b || (b+c)<a)
+        printf ("Nije trougao\n");
+    
+    else if ((a+b>c) || (a+c)>b || (b+c)>a) {
+        
+        if ((fabs(a-b))<EPSILON && (fabs(a-c))<EPSILON && (fabs(b-c)<EPSILON)) {
+             printf ("Jednakostranicni trougao\n"); 
+        }
+        
+        if (fabs(a-b)<EPSILON && !(fabs(a-c)<EPSILON)) {
+             printf ("Jednakokraki trougao\n"); 
+        }
+        
+        if (fabs(a-c)<EPSILON && !(fabs(a-b)<EPSILON)) {
+             printf ("Jednakokraki trougao\n"); 
+        }
+        
+        if (fabs(b-c)<EPSILON && !(fabs(b-a)<EPSILON)) {
+             printf ("Jednakokraki trougao\n"); 
+        }
+        
+        if (fabs(pow(a,2)-pow(b,2)-pow(c,2))<M || fabs(pow(b,2)-pow(a,2)-pow(c,2))<M
+            ||fabs(pow(c,2)-pow(a,2)-pow(b,2))<M) {
+             printf ("Pravougli trougao\n"); 
+        }
+        
+        else if (fabs(a-b)>EPSILON && fabs(a-c)>EPSILON && fabs(b-c)>EPSILON) {
+             printf ("Obicni trougao\n"); 
+        }
+        
+    } 
+    return 0;
+}
+
+

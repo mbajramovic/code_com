@@ -72,6 +72,11 @@ const Autotestovi = db.define('autotestovi', {
 
     bodovi : {
         type : Sequelize.DOUBLE
+    },
+
+    azurirano : {
+        type : Sequelize.BOOLEAN,
+        defaultValue : false
     }
 });
 
@@ -141,7 +146,8 @@ Autotestovi.updateAutotest = function(autotest, fn) {
             expected_crash : autotest.expected_crash,
             ignore_whitespace : autotest.ignore_whitespace,
             regex : autotest.regex,
-            substring : autotest.substring
+            substring : autotest.substring,
+            azurirano : true
         },
         {
             where : {

@@ -72,7 +72,7 @@ class UcesnikPage extends Component {
                     takmicarskaGrupa : response.data.takmicarskaGrupa,
                     takmicenje : response.data.takmicenje,
                     sekunde : sekunde,
-                    kraj : sekunde > 0 ? false : true
+                    kraj : false
                 });
                 this.povuciZadatke();
                 this.upute();
@@ -241,6 +241,7 @@ class UcesnikPage extends Component {
                                     <p className="uspjeh">Takmičenje je završeno.</p>
                                 </div>
                             }
+                            
                         </div>
                     </div>
                     : this.state.error != null ? 

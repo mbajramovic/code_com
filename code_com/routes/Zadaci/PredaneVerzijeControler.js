@@ -58,13 +58,15 @@ module.exports = {
                                     break;
                         }
                     }
+                    var output = at.autotestovi.azurirano == true ? '[ažurirano]' : '';
+
                         var autotest = {
                             'status' : at.status, 
                             'output' : at.output,
                             'runResult' : at.runResult,
                             'compileResult' : at.compileResult,
                             'ulaz' : at.autotestovi != null ? at.autotestovi.stdin : '',
-                            'ocekivaniIzlaz' : at.autotestovi != null? expected.toString() :'',
+                            'ocekivaniIzlaz' : at.autotestovi != null? expected.toString() + output :'',
                             'kod' : at.autotestovi != null ? at.autotestovi.code : '',
                             'global' : at.autotestovi != null ? at.autotestovi.global_above_main : ''
                         }; 
@@ -187,13 +189,14 @@ module.exports = {
                                             break;
                                     }
                                 }
+                                var output = at.autotestovi.azurirano == true ? '[ažurirano]' : '';
                                 var autotest = {
                                     'status' : at.status,
                                     'output' : at.output,
                                     'runResult' : at.runResult,
                                     'compileResult' : at.compileResult,
                                     'ulaz' : at.autotestovi != null ? at.autotestovi.stdin : '',
-                                    'ocekivaniIzlaz' : at.autotestovi != null? expected.toString() :'',
+                                    'ocekivaniIzlaz' : at.autotestovi != null? expected.toString() + output :'',
                                     'kod' : at.autotestovi != null ? at.autotestovi.code : '',
                                     'global' : at.autotestovi != null ? at.autotestovi.global_above_main : ''
                                 };

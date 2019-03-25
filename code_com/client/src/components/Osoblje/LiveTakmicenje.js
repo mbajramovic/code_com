@@ -97,11 +97,13 @@ class LiveTakmicenje extends Component {
                 var zadaci = response.data.data;
                 for (var i = 0; i < zadaci.length; i++) {
                     var zadatak = zadaci[i];
-                    console.log(zadatak)
                     for (var j = 0; j < zadatak.rezultati.length; j++) {
                         var verzija = zadatak.rezultati[j];
+                        var status = "Svi testovi su prošli.";
                         for (var k = 0; k < verzija.autotest_rezultati.length; k++) {
                             var at = verzija.autotest_rezultati[k];
+                            if (at.status != 1)
+                                status = 'Nisu prošli svi testovi.';
                             var autotest = {
                                 'status' : at.status,
                                 'output' : at.output,

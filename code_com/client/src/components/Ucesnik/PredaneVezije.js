@@ -33,7 +33,8 @@ class PredaneVerzije extends Component {
             programIDs : [],
             
             programskiJezik : '',
-            ekstenzija : ''
+            ekstenzija : '',
+            kraj : false
         }
        
         this.handleUploadFile = this.handleUploadFile.bind(this);
@@ -50,6 +51,8 @@ class PredaneVerzije extends Component {
                 verzija : data
             });
         }
+
+    
 
        
     }
@@ -143,10 +146,13 @@ class PredaneVerzije extends Component {
             if (response.data.success) {
                 var verzije = response.data.verzije;
                 for (let i = 0; i < verzije.length; i++) {
-                    verzije[i].status = tumac.compileTumac(verzije[i].status);
+                    verzije[i].status = "Svi testovi su prošli.";//tumac.compileTumac(verzije[i].status);
                     verzije[i].poruka = '';
                     for (let j = 0; j < verzije[i].autotest_rezultati.length; j++) {
                         let at = verzije[i].autotest_rezultati[j];
+
+                        if (at.status != 1)
+                            verzije[i].status = "Nisu prošli svi testovi.";
                         verzije[i].autotest_rezultati[j] = {
                             'status' : tumac.testTumac(at.status),
                             'izlaz' : at.output,
@@ -338,6 +344,7 @@ class PredaneVerzije extends Component {
                 <div>
                     <div>
                         <p className="naslov">Nova verzija rješenja</p>
+                        {!this.state.kraj ?
                         <div className="nivo_3">
                             <p className="napomena">Potrebno je izabrati programski jezik, a zatim datoteku sa računara sa odgovarajućom ekstenzijom.<br/></p>
                                 <form>
@@ -354,7 +361,14 @@ class PredaneVerzije extends Component {
                                             <p className="greska">{this.state.error} Molimo pokušajte opet.</p> : null
                                     }
                                 </div>
-                        </div>
+                                </div>
+                                : 
+                                
+                                <div className="nivo_3">
+                                    <p className="napomena">Takmičenje je završeno.</p>
+                                </div>
+                            }
+                       
                         <p className="naslov">Predane verzije</p>
                         <div className="nivo_3" id="verzije" style={{textAlign : 'center'}}>
                         <p className="napomena"></p>

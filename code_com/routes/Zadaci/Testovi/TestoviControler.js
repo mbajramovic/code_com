@@ -26,49 +26,61 @@ module.exports = {
                 Task.updateTask(task, function(success, data) {
                     Autotestovi.destroy({
                         where : {
-                            zadaciId : zadaciId,
+                            zadaciId : -1,
                             language : task.language
                         }
                     })
                     .then(destroyed => {
-                        for (let i = 0; i < autotestovi.length; i++) {
-                            let autotest = autotestovi[i];
-                            console.log(autotest.id);
-                            autotest.running_params.vmem = autotest.running_params.vmem == null ? '' : autotest.running_params.vmem;
-                            autotest.running_params.timeout = autotest.running_params.timeout == null ? '' : autotest.running_params.timeout;
-                            /*autotest.require_symbols = autotest.require_symbols.toString();
-                            autotest.replace_symbols = autotest.replace_symbols.toString();*/
-                            autotest.zadaciId = zadaciId;
-                            autotest.language = task.language;
-                            /*var expected = {};
-                            for (let j = 0; j < autotest.expected.length; j++)
-                              expected[j.toString()] = autotest.expected[j];
-                            autotest.expected = expected;*/
-                           
-                                /*if (_autotest) {
-                                    Autotestovi.updateAutotest(autotest, function(success, data) {
-                                        console.log(data);
-                                    }); 
-                                }
-                                else {
-                                    Autotestovi.dodajAutotest(autotest, function(success,data) {
-    
-                                    });
-                                }*/
-                                Autotestovi.dodajAutotest(autotest, function(success, data) {
-                                    if (i == autotestovi.length - 1)
-                                        Buildservice.addTask(_task.id)
-                                        .then(odgovor => {
-                                            console.log(odgovor);
-                                        })
-                                        .catch(error => {
-                                            console.log(error);
-                                        })
-                                });
+                        if (autotestovi.length == 0) 
+                            azurirajAutotestove(task, autotestovi, _task.id);
+                        else 
+                            for (let i = 0; i < autotestovi.length; i++) {
+                                let autotest = autotestovi[i];
+                                console.log(autotest.id);
+                                autotest.running_params.vmem = autotest.running_params.vmem == null ? '' : autotest.running_params.vmem;
+                                autotest.running_params.timeout = autotest.running_params.timeout == null ? '' : autotest.running_params.timeout;
+                                /*autotest.require_symbols = autotest.require_symbols.toString();
+                                autotest.replace_symbols = autotest.replace_symbols.toString();*/
+                                autotest.zadaciId = zadaciId;
+                                autotest.language = task.language;
+                                /*var expected = {};
+                                for (let j = 0; j < autotest.expected.length; j++)
+                                expected[j.toString()] = autotest.expected[j];
+                                autotest.expected = expected;*/
                             
-    
-                           
-                        }
+                                    /*if (_autotest) {
+                                        Autotestovi.updateAutotest(autotest, function(success, data) {
+                                            console.log(data);
+                                        }); 
+                                    }
+                                    else {
+                                        Autotestovi.dodajAutotest(autotest, function(success,data) {
+        
+                                        });
+                                    }*/
+                                    Autotestovi.findOne({
+                                        where : {
+                                            _id : autotest.id,
+                                            language : task.language,
+                                            zadaciId : zadaciId
+                                        }
+                                    })
+                                    .then(at => {
+                                        if (at == null) {
+                                            Autotestovi.dodajAutotest(autotest, function(success, data) {
+                                                if (i == autotestovi.length - 1) {
+                                                azurirajAutotestove(task, autotestovi, _task.id);
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            Autotestovi.updateAutotest(autotest, function(success, data) {
+                                                if (i == autotestovi.length - 1)
+                                                    azurirajAutotestove(task, autotestovi, _task.id); 
+                                            });
+                                        }
+                                    })
+                            }
                     })
                 });
             }
@@ -125,6 +137,7 @@ module.exports = {
     getAutotestovi : function(req, res) {
         var zadaciId = req.query.zadaciId;
         var jezik = req.query.jezik.length == 3 && req.query.jezik[2] == ' ' && req.query.jezik[0] == 'C' ? 'C++' : req.query.jezik;
+        console.log(jezik);
         Task.findOne({
             where : {
                 zadaciId : zadaciId,
@@ -255,4 +268,58 @@ jsonToArray = function(json) {
     }
 
     return array;
+}
+
+azurirajAutotestove = function(task, autotestovi,id) {
+    Autotestovi.findAll({
+        where : {
+            zadaciId : task.zadaciId,
+            language : task.language
+        }
+    })
+    .then(ats => {
+        if (ats.length != autotestovi.length) {
+            for (let i = 0; i < ats.length; i++) {
+                Autotestovi.findOne({
+                    where : {
+                        language : task.language, 
+                        zadaciId : task.zadaciId,
+                        _id : i+1
+                    }
+                })
+                .then(att => {
+                    if (att != null && (i+1) > autotestovi.length) {
+                        Autotestovi.destroy({
+                            where : {
+                                _id : i+1,
+                                zadaciId : task.zadaciId,
+                                language : task.language
+                            }
+                        })
+                        .then(destroyed => {
+                            if (i == ats.length - 1) {
+                                console.log('kkk');
+                                Buildservice.addTask(id)
+                                .then(odgovor => {
+                                    console.log(odgovor);
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        else {
+            Buildservice.addTask(id)
+            .then(odgovor => {
+                console.log(odgovor);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
+    });
 }

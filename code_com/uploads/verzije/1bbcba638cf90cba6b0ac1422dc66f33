@@ -1,0 +1,19 @@
+#include <stdio.h>
+int main () {
+    int suma=0;
+    char n;
+    
+    printf ("Unesite znakove: ");
+    
+    for ( ; ; ) {
+        scanf ("%c",&n);
+        if (n==46) break;
+        
+        if (n==48 || n==49 || n==50 || n==51 || n==52 || n==53 || n==54 || n==55 || n==56 || n==57) {
+            suma=suma+n-48;
+            
+        }
+    }
+    printf ("Suma je: %d",suma);
+    return 0;
+}

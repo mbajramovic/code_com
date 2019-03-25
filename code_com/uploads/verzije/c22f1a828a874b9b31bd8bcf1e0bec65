@@ -1,0 +1,32 @@
+#include <stdio.h>
+int main() {
+    int j=0, p, d, t;
+   
+    
+    
+    printf ("Unesite brojeve (0 za kraj): \n");
+    scanf ("%d %d %d",&p,&d,&t);
+    if(d==p-t) j++
+    
+   
+    for ( ; ; ) {
+        p=d;
+        d=t;
+        scanf ("%d",&t);
+        if (t==0) break;
+        else if (d==p-t) j++;
+    }
+       
+    if (j==0) 
+        printf ("Niti jedan clan niza ne zadovoljava uslov.\n");
+    else if (j%10==1 && j!=11)
+        printf ("%d clan niza zadovoljava uslov.\n",j);
+    else if ((j%10==2 && j!=12) || (j%10==3 && j!=13) || (j%10==4 && j!=14)) 
+        printf ("%d clana niza zadovoljava uslov.\n",j);
+    else 
+        printf ("%d clanova niza zadovoljava uslov.\n",j);
+    return 0
+    }
+    
+    
+
